@@ -22,3 +22,8 @@ select,
 textarea {
     max-width: 280px;
 }
+
+img.list-icon {
+    border: none;
+    margin-right:5px;
+}

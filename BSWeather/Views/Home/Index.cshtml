@@ -13,7 +13,14 @@
 <div class="row">
     <div class="col-md-4">
         <h2>Погода на сегодня</h2>
-        <p>@weather.main.temp</p>
+        <p>
+            <ul>
+                <li><img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon"/>Температура: @(weather.main.temp)°C</li>
+                <li><img src="@Url.Content("~/Content/Images/counter.png")" class="list-icon"/>Давление: @(weather.main.pressure) мм рт. ст.</li>
+                <li><img src="@Url.Content("~/Content/Images/water.png")" class="list-icon" />Влажность: @(weather.main.humidity)%</li>
+                <li><img src="@Url.Content("~/Content/Images/weather-wind.png")" class="list-icon" />Скорость ветра: @(weather.wind.speed) м/с</li>
+            </ul>
+        </p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Просмотреть &raquo;</a></p>
     </div>
     <div class="col-md-4">
