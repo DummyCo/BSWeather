@@ -9,9 +9,14 @@
 }
 @helper WeatherButton(int? id, string name)
 {
-    string activeParameter = Weather.City.Id == id ? "active" : string.Empty;
+    @WeatherButton(id, name, null);
+}
+@helper WeatherButton(int? id, string name, string glyph)
+{
+string activeParameter = Weather.City.Id == id ? "active" : string.Empty;
+string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" style=\"padding-left: 4px;\"></span>" : string.Empty;
     <a href="@Url.Action("Index", "Home", new { Id = id })" type="button" class="btn btn-default @activeParameter">
-        @name
+        @name@Html.Raw(spanGlyph)
     </a>
 }
 
@@ -25,7 +30,26 @@
                 @WeatherButton(706483, "Харьков")
                 @WeatherButton(709930, "Депропетровск")
                 @WeatherButton(698740, "Одесса")
-                @WeatherButton(null, "Выбрать город")
+            </div>
+        </div>
+    </p>
+    <p>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    @model CitySearch
+                    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { Class = "form-horizontal" }))
+                    {
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                @Html.TextBoxFor(s => s.CityName, new { Class = "form-control input-lg" })
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="submit" class="btn btn-default btn-lg btn-block" value="Искать">
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </p>
