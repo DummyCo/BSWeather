@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BSWeather.Models
 {
-    public class WeatherBase
+    public class OpenWeatherBase
     {
         public class Coord
         {

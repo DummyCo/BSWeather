@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using BSWeather.Models;
+using BSWeather.Services;
 using Newtonsoft.Json;
 
 namespace BSWeather.Controllers
@@ -16,12 +17,7 @@ namespace BSWeather.Controllers
     {
         public ActionResult Index()
         {
-            string url = "http://api.openweathermap.org/data/2.5/forecast/daily?id=703448&units=metric&APPID=" + WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"];
-            var webClient = new WebClient();
-            var resultString = webClient.DownloadString(url);
-
-            var weather = JsonConvert.DeserializeObject<WeatherBase.RootObject>(resultString);
-            ViewData["Weather"] = weather;
+            ViewData["Weather"] = new OpenWeatherService().GetWeather(703448);
 
             return View();
         }
