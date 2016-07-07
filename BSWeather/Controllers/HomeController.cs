@@ -25,8 +25,14 @@ namespace BSWeather.Controllers
         [HttpPost]
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
-            ViewData["Weather"] = new OpenWeatherService().GetWeatherByCityName(citySearch.CityName);
-
+            if (ModelState.IsValid)
+            {
+                ViewData["Weather"] = new OpenWeatherService().GetWeatherByCityName(citySearch.CityName);
+            }
+            else
+            {
+                ViewData["Weather"] = new OpenWeatherService().GetWeatherById(703448);
+            }
             return View("Index");
         }
 
