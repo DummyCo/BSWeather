@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using BSWeather.Models;
 using BSWeather.Services;
-using Newtonsoft.Json;
 
 namespace BSWeather.Controllers
 {

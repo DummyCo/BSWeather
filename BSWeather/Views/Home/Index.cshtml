@@ -1,6 +1,5 @@
-﻿@using System.ComponentModel.DataAnnotations
-@using BSWeather.Extensions
-@using BSWeather.Models
+﻿@using BSWeather.Models
+@using BSWeather.Util
 @{
     ViewBag.Title = "Home Page";
     Weather = ViewBag.Weather;
@@ -60,7 +59,15 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
         <ul class="list-group">
             <li class="list-group-item row">
                 <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/globe-green.png")" class="list-icon" />Город:
+                    <img src="@Url.Content("~/Content/Images/calendar-month.png")" class="list-icon" />Дата:
+                </div>
+                <div class="col-md-9">
+                    @(DateTimeUtils.UnixTimeStampToDateTime(Weather.List[0].Dt).ToString("dd/MM/yyyy"))
+                </div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-md-3">
+                    <img src="@Url.Content("~/Content/Images/globe-green.png")" class="list-icon"/>Город:
                 </div>
                 <div class="col-md-9">
                     @(Weather.City.Name)
@@ -68,7 +75,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
             </li>
             <li class="list-group-item row">
                 <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon" />Температура:
+                    <img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon"/>Температура:
                 </div>
                 <div class="col-md-9">
                     @(Weather.List[0].Temp.Day)°C
@@ -76,7 +83,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
             </li>
             <li class="list-group-item row">
                 <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/counter.png")" class="list-icon" />Давление:
+                    <img src="@Url.Content("~/Content/Images/counter.png")" class="list-icon"/>Давление:
                 </div>
                 <div class="col-md-9">
                     @(Weather.List[0].Pressure) мбар
@@ -84,7 +91,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
             </li>
             <li class="list-group-item row">
                 <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/water.png")" class="list-icon" />Влажность:
+                    <img src="@Url.Content("~/Content/Images/water.png")" class="list-icon"/>Влажность:
                 </div>
                 <div class="col-md-9">
                     @(Weather.List[0].Humidity)%
@@ -92,7 +99,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
             </li>
             <li class="list-group-item row">
                 <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/weather-wind.png")" class="list-icon" />Скорость ветра:
+                    <img src="@Url.Content("~/Content/Images/weather-wind.png")" class="list-icon"/>Скорость ветра:
                 </div>
                 <div class="col-md-9">
                     @(Weather.List[0].Speed) м/с

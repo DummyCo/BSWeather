@@ -132,12 +132,14 @@
     <Compile Include="Models\OpenWeatherBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\OpenWeatherService.cs" />
+    <Compile Include="Util\DateTimeUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\calendar-month.png" />
     <Content Include="Content\Images\counter.png" />
     <Content Include="Content\Images\globe-green.png" />
     <Content Include="Content\Images\thermometer.png" />
