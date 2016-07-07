@@ -137,6 +137,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\counter.png" />
+    <Content Include="Content\Images\globe-green.png" />
     <Content Include="Content\Images\thermometer.png" />
     <Content Include="Content\Images\water.png" />
     <Content Include="Content\Images\weather-wind.png" />

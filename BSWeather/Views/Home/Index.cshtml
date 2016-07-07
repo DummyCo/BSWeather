@@ -3,35 +3,37 @@
     ViewBag.Title = "Home Page";
     OpenWeatherBase.RootObject weather = ViewBag.Weather;
 }
+@helper WeatherButton(int? id, string name)
+{
+    <a href="@Url.Action("Index", "Home", new { Id = id })" type="button" class="btn btn-default active">
+        @name
+    </a>
+}
 
 <div class="jumbotron">
     <h1>BSWeather</h1>
     <p class="lead">
         <div class="text-center">
             <div class="btn-group btn-group-lg" role="group">
-                <button type="button" class="btn btn-default active">
-                    Киев
-                </button>
-                <button type="button" class="btn btn-default">
-                    Львов
-                </button>
-                <button type="button" class="btn btn-default">
-                    Харьков
-                </button>
-                <button type="button" class="btn btn-default">
-                    Депропетровск
-                </button>
-                <button type="button" class="btn btn-default">
-                    Одесса
-                </button>
-                <button type="button" class="btn btn-secondary">
-                    Выбрать город
-                </button>
+                @WeatherButton(703448, "Киев")
+                @WeatherButton(702550, "Львов")
+                @WeatherButton(706483, "Харьков")
+                @WeatherButton(709930, "Депропетровск")
+                @WeatherButton(698740, "Одесса")
+                @WeatherButton(null, "Выбрать город")
             </div>
         </div>
     </p>
     <p>
         <ul class="list-group">
+            <li class="list-group-item row">
+                <div class="col-md-3">
+                    <img src="@Url.Content("~/Content/Images/globe-green.png")" class="list-icon" />Город:
+                </div>
+                <div class="col-md-9">
+                    @(weather.City.Name)
+                </div>
+            </li>
             <li class="list-group-item row">
                 <div class="col-md-3">
                     <img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon" />Температура:

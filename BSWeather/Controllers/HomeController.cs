@@ -15,9 +15,9 @@ namespace BSWeather.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            ViewData["Weather"] = new OpenWeatherService().GetWeather(703448);
+            ViewData["Weather"] = new OpenWeatherService().GetWeather(id ?? 703448);
 
             return View();
         }
