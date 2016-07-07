@@ -6,31 +6,79 @@
 
 <div class="jumbotron">
     <h1>BSWeather</h1>
-    <p class="lead">Прогноз погоды на ближайшее время</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+    <p class="lead">
+        <div class="text-center">
+            <div class="btn-group btn-group-lg" role="group">
+                <button type="button" class="btn btn-default active">
+                    Киев
+                </button>
+                <button type="button" class="btn btn-default">
+                    Львов
+                </button>
+                <button type="button" class="btn btn-default">
+                    Харьков
+                </button>
+                <button type="button" class="btn btn-default">
+                    Депропетровск
+                </button>
+                <button type="button" class="btn btn-default">
+                    Одесса
+                </button>
+                <button type="button" class="btn btn-secondary">
+                    Выбрать город
+                </button>
+            </div>
+        </div>
+    </p>
+    <p>
+        <ul class="list-group">
+            <li class="list-group-item row">
+                <div class="col-md-3">
+                    <img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon" />Температура:
+                </div>
+                <div class="col-md-9">
+                    @(weather.List[0].Temp.Day)°C
+                </div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-md-3">
+                    <img src="@Url.Content("~/Content/Images/counter.png")" class="list-icon" />Давление:
+                </div>
+                <div class="col-md-9">
+                    @(weather.List[0].Pressure) мбар
+                </div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-md-3">
+                    <img src="@Url.Content("~/Content/Images/water.png")" class="list-icon" />Влажность:
+                </div>
+                <div class="col-md-9">
+                    @(weather.List[0].Humidity)%
+                </div>
+            </li>
+            <li class="list-group-item row">
+                <div class="col-md-3">
+                    <img src="@Url.Content("~/Content/Images/weather-wind.png")" class="list-icon" />Скорость ветра:
+                </div>
+                <div class="col-md-9">
+                    @(weather.List[0].Speed) м/с
+                </div>
+            </li>
+        </ul>
+    </p>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Погода на сегодня</h2>
-        <p>
-            <ul>
-                <li><img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon"/>Температура: @(weather.main.temp)°C</li>
-                <li><img src="@Url.Content("~/Content/Images/counter.png")" class="list-icon"/>Давление: @(weather.main.pressure) мм рт. ст.</li>
-                <li><img src="@Url.Content("~/Content/Images/water.png")" class="list-icon" />Влажность: @(weather.main.humidity)%</li>
-                <li><img src="@Url.Content("~/Content/Images/weather-wind.png")" class="list-icon" />Скорость ветра: @(weather.wind.speed) м/с</li>
-            </ul>
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Просмотреть &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Погода на три дня</h2>
-        <p>Текст</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Просмотреть &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Погода на неделю</h2>
-        <p>Текст</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Просмотреть &raquo;</a></p>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Погода на сегодня</h2>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Просмотреть &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Погода на три дня</h2>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Просмотреть &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Погода на неделю</h2>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Просмотреть &raquo;</a></p>
+        </div>
     </div>
 </div>

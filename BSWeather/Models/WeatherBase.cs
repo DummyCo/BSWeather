@@ -10,61 +10,57 @@ namespace BSWeather.Models
     {
         public class Coord
         {
-            public double lon { get; set; }
-            public double lat { get; set; }
+            public double Lon { get; set; }
+            public double Lat { get; set; }
+        }
+
+        public class City
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public Coord Coord { get; set; }
+            public string Country { get; set; }
+            public int Population { get; set; }
+        }
+
+        public class Temp
+        {
+            public double Day { get; set; }
+            public double Min { get; set; }
+            public double Max { get; set; }
+            public double Night { get; set; }
+            public double Eve { get; set; }
+            public double Morn { get; set; }
         }
 
         public class Weather
         {
-            public int id { get; set; }
-            public string main { get; set; }
-            public string description { get; set; }
-            public string icon { get; set; }
+            public int Id { get; set; }
+            public string Main { get; set; }
+            public string Description { get; set; }
+            public string Icon { get; set; }
         }
 
-        public class Main
+        public class List
         {
-            public double temp { get; set; }
-            public int pressure { get; set; }
-            public int humidity { get; set; }
-            public double temp_min { get; set; }
-            public double temp_max { get; set; }
-        }
-
-        public class Wind
-        {
-            public int speed { get; set; }
-            public int deg { get; set; }
-        }
-
-        public class Clouds
-        {
-            public int all { get; set; }
-        }
-
-        public class Sys
-        {
-            public int type { get; set; }
-            public int id { get; set; }
-            public double message { get; set; }
-            public string country { get; set; }
-            public int sunrise { get; set; }
-            public int sunset { get; set; }
+            public int Dt { get; set; }
+            public Temp Temp { get; set; }
+            public double Pressure { get; set; }
+            public int Humidity { get; set; }
+            public List<Weather> Weather { get; set; }
+            public double Speed { get; set; }
+            public int Deg { get; set; }
+            public int Clouds { get; set; }
+            public double Rain { get; set; }
         }
 
         public class RootObject
         {
-            public Coord coord { get; set; }
-            public List<Weather> weather { get; set; }
-            public string @base { get; set; }
-            public Main main { get; set; }
-            public Wind wind { get; set; }
-            public Clouds clouds { get; set; }
-            public int dt { get; set; }
-            public Sys sys { get; set; }
-            public int id { get; set; }
-            public string name { get; set; }
-            public int cod { get; set; }
+            public City City { get; set; }
+            public string Cod { get; set; }
+            public double Message { get; set; }
+            public int Cnt { get; set; }
+            public List<List> List { get; set; }
         }
     }
 }

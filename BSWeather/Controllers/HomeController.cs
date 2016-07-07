@@ -16,7 +16,7 @@ namespace BSWeather.Controllers
     {
         public ActionResult Index()
         {
-            string url = "http://api.openweathermap.org/data/2.5/weather?id=703448&units=metric&APPID=" + WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"];
+            string url = "http://api.openweathermap.org/data/2.5/forecast/daily?id=703448&units=metric&APPID=" + WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"];
             var webClient = new WebClient();
             var resultString = webClient.DownloadString(url);
 
