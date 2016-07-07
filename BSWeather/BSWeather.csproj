@@ -139,9 +139,9 @@
     <Content Include="Content\Images\counter.png" />
     <Content Include="Content\Images\globe-green.png" />
     <Content Include="Content\Images\thermometer.png" />
+    <Content Include="Content\Images\umbrella.png" />
     <Content Include="Content\Images\water.png" />
     <Content Include="Content\Images\weather-wind.png" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
