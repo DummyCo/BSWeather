@@ -1,11 +1,16 @@
 ﻿@using BSWeather.Models
 @{
     ViewBag.Title = "Home Page";
-    OpenWeatherBase.RootObject weather = ViewBag.Weather;
+    Weather = ViewBag.Weather;
+}
+@functions
+{
+    public OpenWeatherBase.RootObject Weather;
 }
 @helper WeatherButton(int? id, string name)
 {
-    <a href="@Url.Action("Index", "Home", new { Id = id })" type="button" class="btn btn-default active">
+    string activeParameter = Weather.City.Id == id ? "active" : string.Empty;
+    <a href="@Url.Action("Index", "Home", new { Id = id })" type="button" class="btn btn-default @activeParameter">
         @name
     </a>
 }
@@ -31,7 +36,7 @@
                     <img src="@Url.Content("~/Content/Images/globe-green.png")" class="list-icon" />Город:
                 </div>
                 <div class="col-md-9">
-                    @(weather.City.Name)
+                    @(Weather.City.Name)
                 </div>
             </li>
             <li class="list-group-item row">
@@ -39,7 +44,7 @@
                     <img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon" />Температура:
                 </div>
                 <div class="col-md-9">
-                    @(weather.List[0].Temp.Day)°C
+                    @(Weather.List[0].Temp.Day)°C
                 </div>
             </li>
             <li class="list-group-item row">
@@ -47,7 +52,7 @@
                     <img src="@Url.Content("~/Content/Images/counter.png")" class="list-icon" />Давление:
                 </div>
                 <div class="col-md-9">
-                    @(weather.List[0].Pressure) мбар
+                    @(Weather.List[0].Pressure) мбар
                 </div>
             </li>
             <li class="list-group-item row">
@@ -55,7 +60,7 @@
                     <img src="@Url.Content("~/Content/Images/water.png")" class="list-icon" />Влажность:
                 </div>
                 <div class="col-md-9">
-                    @(weather.List[0].Humidity)%
+                    @(Weather.List[0].Humidity)%
                 </div>
             </li>
             <li class="list-group-item row">
@@ -63,7 +68,7 @@
                     <img src="@Url.Content("~/Content/Images/weather-wind.png")" class="list-icon" />Скорость ветра:
                 </div>
                 <div class="col-md-9">
-                    @(weather.List[0].Speed) м/с
+                    @(Weather.List[0].Speed) м/с
                 </div>
             </li>
         </ul>
