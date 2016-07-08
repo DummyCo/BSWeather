@@ -18,14 +18,19 @@ namespace BSWeather.Controllers
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
             int actualDays = citySearch.Days;
+            OpenWeatherBase.RootObject weather = null;
+            var service = new OpenWeatherService();
             if (ModelState.IsValid)
             {
-                ViewData["Weather"] = new OpenWeatherService().GetWeatherByCityName(citySearch.CityName, actualDays);
+                weather = service.GetWeatherByCityName(citySearch.CityName, actualDays);
             }
-            else
+            
+            if (weather == null)
             {
-                ViewData["Weather"] = new OpenWeatherService().GetWeatherById(703448, actualDays);
+                weather = service.GetWeatherById(703448, actualDays);
             }
+
+            ViewData["Weather"] = weather;
             ViewData["Days"] = actualDays;
 
             return View("Index");

@@ -25,7 +25,15 @@ namespace BSWeather.Services
             var webClient = new WebClient { Encoding = Encoding.UTF8 };
             var resultString = webClient.DownloadString(url);
 
-            return JsonConvert.DeserializeObject<OpenWeatherBase.RootObject>(resultString);
+            try
+            {
+                return JsonConvert.DeserializeObject<OpenWeatherBase.RootObject>(resultString);
+            }
+            catch
+            {
+                // ignored
+                return null;
+            }
         }
     }
 }
