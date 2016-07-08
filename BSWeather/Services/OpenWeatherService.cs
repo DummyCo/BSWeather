@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text;
 using System.Web.Configuration;
 using BSWeather.Models;
 using Newtonsoft.Json;
@@ -7,19 +8,21 @@ namespace BSWeather.Services
 {
     public class OpenWeatherService
     {
-        public OpenWeatherBase.RootObject GetWeatherById(int cityId)
+        public OpenWeatherBase.RootObject GetWeatherById(int cityId, int days)
         {
-            var url = $"http://api.openweathermap.org/data/2.5/forecast/daily?id={cityId}&units=metric&APPID={WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"]}";
-            var webClient = new WebClient();
-            var resultString = webClient.DownloadString(url);
-
-            return JsonConvert.DeserializeObject<OpenWeatherBase.RootObject>(resultString);
+            var url = $"http://api.openweathermap.org/data/2.5/forecast/daily?id={cityId}&units=metric&lang=ru&cnt={days}&APPID={WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"]}";
+            return GetWeatherByUrl(url);
         }
 
-        public OpenWeatherBase.RootObject GetWeatherByCityName(string cityName)
+        public OpenWeatherBase.RootObject GetWeatherByCityName(string cityName, int days)
         {
-            var url = $"http://api.openweathermap.org/data/2.5/forecast/daily?q={cityName}&units=metric&APPID={WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"]}";
-            var webClient = new WebClient();
+            var url = $"http://api.openweathermap.org/data/2.5/forecast/daily?q={cityName}&units=metric&lang=ru&cnt={days}&APPID={WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"]}";
+            return GetWeatherByUrl(url);
+        }
+
+        public OpenWeatherBase.RootObject GetWeatherByUrl(string url)
+        {
+            var webClient = new WebClient { Encoding = Encoding.UTF8 };
             var resultString = webClient.DownloadString(url);
 
             return JsonConvert.DeserializeObject<OpenWeatherBase.RootObject>(resultString);

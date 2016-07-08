@@ -6,24 +6,29 @@ namespace BSWeather.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id, int? days)
         {
-            ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id ?? 703448);
+            int actualDays = days ?? 1;
+            ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id ?? 703448, actualDays);
+            ViewData["Days"] = actualDays;
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult SearchCityByName(CitySearch citySearch)
+        public ActionResult SearchCityByName(CitySearch citySearch, int? days)
         {
+            int actualDays = days ?? 1;
             if (ModelState.IsValid)
             {
-                ViewData["Weather"] = new OpenWeatherService().GetWeatherByCityName(citySearch.CityName);
+                ViewData["Weather"] = new OpenWeatherService().GetWeatherByCityName(citySearch.CityName, actualDays);
             }
             else
             {
-                ViewData["Weather"] = new OpenWeatherService().GetWeatherById(703448);
+                ViewData["Weather"] = new OpenWeatherService().GetWeatherById(703448, actualDays);
             }
+            ViewData["Days"] = actualDays;
+
             return View("Index");
         }
 
