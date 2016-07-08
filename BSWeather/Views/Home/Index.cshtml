@@ -46,14 +46,12 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
 }
 @helper DaysButton(string title, int days)
 {
+string activeParameter = Days == days ? "active" : string.Empty;
     <div class="col-md-4">
         <div class="col-md-12 list-group-item">
-            <h3>@title</h3>
-            <p>
-                <a href="@Url.Action("Index", "Home", new {Id = WeatherInstance.City.Id, Days = days})" type="button" class="btn btn-default">
-                    Просмотреть &raquo;
-                </a>
-            </p>
+            <a href="@Url.Action("Index", "Home", new {Id = WeatherInstance.City.Id, Days = days})" type="button" class="btn btn-default btn-block btn-lg @activeParameter">
+                @title &raquo;
+            </a>
         </div>
     </div>
 }
