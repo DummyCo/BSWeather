@@ -78,7 +78,7 @@ string activeParameter = Days == days ? "active" : string.Empty;
                     {
                         <div class="form-group">
                             <div class="col-sm-6">
-                                @Html.TextBoxFor(model => model.CityName, new { Class = "form-control input-lg", placeholder = "Имя" })
+                                @Html.TextBoxFor(model => model.CityName, new { Class = "form-control input-lg", placeholder = "Название" })
                                 @Html.ValidationMessageFor(model => model.CityName)
                                 @Html.HiddenFor(model => model.Days, new { Days })
                             </div>
