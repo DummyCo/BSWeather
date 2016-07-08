@@ -136,6 +136,9 @@ string activeParameter = Days == days ? "active" : string.Empty;
                 <li class="list-group-item row">
                     @WeatherEntry("~/Content/Images/weather-wind.png", "Скорость ветра:", (list.Speed) + " м/с")
                 </li>
+                <li class="list-group-item row">
+                    @WeatherEntry("~/Content/Images/weather-cloud.png", "Облачность:", (list.Clouds) + "%")
+                </li>
             </ul>
         </p>
     }
