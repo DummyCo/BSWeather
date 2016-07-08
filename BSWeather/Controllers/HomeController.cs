@@ -16,9 +16,9 @@ namespace BSWeather.Controllers
         }
 
         [HttpPost]
-        public ActionResult SearchCityByName(CitySearch citySearch, int? days)
+        public ActionResult SearchCityByName(CitySearch citySearch)
         {
-            int actualDays = days ?? 1;
+            int actualDays = citySearch.Days;
             if (ModelState.IsValid)
             {
                 ViewData["Weather"] = new OpenWeatherService().GetWeatherByCityName(citySearch.CityName, actualDays);
