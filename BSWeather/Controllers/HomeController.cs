@@ -6,11 +6,10 @@ namespace BSWeather.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(int? id, int? days)
+        public ActionResult Index(int id, int days)
         {
-            int actualDays = days ?? 1;
-            ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id ?? 703448, actualDays);
-            ViewData["Days"] = actualDays;
+            ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id, days);
+            ViewData["Days"] = days;
 
             return View();
         }
@@ -19,7 +18,6 @@ namespace BSWeather.Controllers
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
             int actualDays = citySearch.Days;
-            ModelState["Days"].Errors.Clear();
             if (ModelState.IsValid)
             {
                 ViewData["Weather"] = new OpenWeatherService().GetWeatherByCityName(citySearch.CityName, actualDays);

@@ -11,8 +11,8 @@ namespace BSWeather
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{action}/{id}/{days}",
+                defaults: new { controller = "Home", action = "Index", id = 703448, days = 1 }
             );
         }
     }

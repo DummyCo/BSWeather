@@ -10,15 +10,15 @@
     public OpenWeatherBase.RootObject WeatherInstance;
     public int Days;
 }
-@helper WeatherButton(int? id, string name)
+@helper WeatherButton(int id, string name)
 {
     @WeatherButton(id, name, null);
 }
-@helper WeatherButton(int? id, string name, string glyph)
+@helper WeatherButton(int id, string name, string glyph)
 {
 string activeParameter = WeatherInstance.City.Id == id ? "active" : string.Empty;
 string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" style=\"padding-left: 4px;\"></span>" : string.Empty;
-    <a href="@Url.Action("Index", "Home", new { Id = id, Days })" type="button" class="btn btn-default @activeParameter">
+    <a href="@Url.Action("Index", "Home", new { id, days = Days })" type="button" class="btn btn-default @activeParameter">
         @name@Html.Raw(spanGlyph)
     </a>
 }
@@ -48,7 +48,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
 string activeParameter = Days == days ? "active" : string.Empty;
     <div class="col-md-4">
         <div class="col-md-12 list-group-item">
-            <a href="@Url.Action("Index", "Home", new {WeatherInstance.City.Id, Days = days})" type="button" class="btn btn-default btn-block btn-lg @activeParameter">
+            <a href="@Url.Action("Index", "Home", new {id = WeatherInstance.City.Id, days})" type="button" class="btn btn-default btn-block btn-lg @activeParameter">
                 @title &raquo;
             </a>
         </div>
