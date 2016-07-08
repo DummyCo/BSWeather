@@ -149,7 +149,9 @@
     <Content Include="Content\Images\umbrella.png" />
     <Content Include="Content\Images\water.png" />
     <Content Include="Content\Images\weather-cloud.png" />
+    <Content Include="Content\Images\weather-moon-half.png" />
     <Content Include="Content\Images\weather-wind.png" />
+    <Content Include="Content\Images\weather.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

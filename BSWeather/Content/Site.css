@@ -28,6 +28,17 @@ img.list-icon {
     margin-right: 10px;
 }
 
+img.day-cycle-left-icon {
+    border: none;
+    margin-right: 5px;
+}
+
+img.day-cycle-right-icon {
+    border: none;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
 .jumbotron {
     font-size: 16px;
     font-weight: 200;

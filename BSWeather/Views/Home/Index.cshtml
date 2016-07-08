@@ -120,12 +120,29 @@ string activeParameter = Days == days ? "active" : string.Empty;
                         </div>
                     </div>
                 </li>
-
                 <li class="list-group-item row">
-                    @WeatherEntry("~/Content/Images/calendar-month.png", "Дата:", list.GetDateTime().ToString("dd/MM/yyyy"))
+                    @WeatherEntry("~/Content/Images/calendar-month.png", "Дата:", list.GetDateTime().ToString("d MMMM yyyy, dddd"))
                 </li>
                 <li class="list-group-item row">
-                    @WeatherEntry("~/Content/Images/thermometer.png", "Температура:", (list.Temp.Day) + "°C")
+                    <div class="row">
+                        <div class="row-height">
+                            <div class="col-xs-1 col-height col-middle">
+                                <div class="inside">
+                                    <div class="content">
+                                        <img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon" />Температура:
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-1 col-height col-middle">
+                                <div class="inside">
+                                    <div class="content">
+                                        <img src="@Url.Content("~/Content/Images/weather-moon-half.png")" class="day-cycle-left-icon" />@(list.Temp.Night)°C
+                                        <img src="@Url.Content("~/Content/Images/weather.png")" class="day-cycle-right-icon" />@(list.Temp.Day)°C
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 <li class="list-group-item row">
                     @WeatherEntry("~/Content/Images/counter.png", "Давление:", (list.Pressure) + " мбар")
