@@ -1,12 +1,13 @@
-﻿@using BSWeather.Models
+﻿@using BSWeather.Extensions
+@using BSWeather.Models
 @using BSWeather.Util
 @{
     ViewBag.Title = "Home Page";
-    Weather = ViewBag.Weather;
+    WeatherInstance = ViewBag.Weather;
 }
 @functions
 {
-    public OpenWeatherBase.RootObject Weather;
+    public OpenWeatherBase.RootObject WeatherInstance;
 }
 @helper WeatherButton(int? id, string name)
 {
@@ -14,11 +15,32 @@
 }
 @helper WeatherButton(int? id, string name, string glyph)
 {
-string activeParameter = Weather.City.Id == id ? "active" : string.Empty;
+string activeParameter = WeatherInstance.City.Id == id ? "active" : string.Empty;
 string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" style=\"padding-left: 4px;\"></span>" : string.Empty;
     <a href="@Url.Action("Index", "Home", new { Id = id })" type="button" class="btn btn-default @activeParameter">
         @name@Html.Raw(spanGlyph)
     </a>
+}
+@helper WeatherEntry(string leftImageUrl, string leftEntry, string rightEntry)
+{
+    <div class="row">
+        <div class="row-height">
+            <div class="col-xs-1 col-height col-middle">
+                <div class="inside">
+                    <div class="content">
+                        <img src="@Url.Content(leftImageUrl)" class="list-icon" />@leftEntry
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-1 col-height col-middle">
+                <div class="inside">
+                    <div class="content">
+                        @rightEntry
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 <div class="jumbotron">
@@ -39,7 +61,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
                     @model CitySearch
-                    @using (Html.BeginForm("SearchCityByName", "Home", FormMethod.Post, new { Class = "form-horizontal"}))
+                    @using (Html.BeginForm("SearchCityByName", "Home", FormMethod.Post, new { Class = "form-horizontal" }))
                     {
                         <div class="form-group">
                             <div class="col-sm-6">
@@ -58,52 +80,40 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
     <p>
         <ul class="list-group">
             <li class="list-group-item row">
-                <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/calendar-month.png")" class="list-icon" />Дата:
-                </div>
-                <div class="col-md-9">
-                    @(DateTimeUtils.UnixTimeStampToDateTime(Weather.List[0].Dt).ToString("dd/MM/yyyy"))
-                </div>
-            </li>
-            <li class="list-group-item row">
-                <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/globe-green.png")" class="list-icon"/>Город:
-                </div>
-                <div class="col-md-9">
-                    @(Weather.City.Name)
-                </div>
-            </li>
-            <li class="list-group-item row">
-                <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/thermometer.png")" class="list-icon"/>Температура:
-                </div>
-                <div class="col-md-9">
-                    @(Weather.List[0].Temp.Day)°C
+                <div class="row">
+                    <div class="row-height">
+                        <div class="col-xs-1 col-height col-middle">
+                            <div class="inside">
+                                <div class="content">
+                                    <img src="@Url.Content("~/Content/Images/globe-green.png")" class="list-icon"/>Город:
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-1 col-height col-middle">
+                            <div class="inside">
+                                <div class="content">
+                                    <img src="http://openweathermap.org/img/w/@(WeatherInstance.List[0].Weather[0].Icon).png" class="list-icon"/>@(WeatherInstance.City.Name)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </li>
+
             <li class="list-group-item row">
-                <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/counter.png")" class="list-icon"/>Давление:
-                </div>
-                <div class="col-md-9">
-                    @(Weather.List[0].Pressure) мбар
-                </div>
+                @WeatherEntry("~/Content/Images/calendar-month.png", "Дата:", WeatherInstance.List[0].GetDateTime().ToString("dd/MM/yyyy"))
             </li>
             <li class="list-group-item row">
-                <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/water.png")" class="list-icon"/>Влажность:
-                </div>
-                <div class="col-md-9">
-                    @(Weather.List[0].Humidity)%
-                </div>
+                @WeatherEntry("~/Content/Images/thermometer.png", "Температура:", (WeatherInstance.List[0].Temp.Day) + "°C")
             </li>
             <li class="list-group-item row">
-                <div class="col-md-3">
-                    <img src="@Url.Content("~/Content/Images/weather-wind.png")" class="list-icon"/>Скорость ветра:
-                </div>
-                <div class="col-md-9">
-                    @(Weather.List[0].Speed) м/с
-                </div>
+                @WeatherEntry("~/Content/Images/counter.png", "Давление:", (WeatherInstance.List[0].Pressure) + " мбар")
+            </li>
+            <li class="list-group-item row">
+                @WeatherEntry("~/Content/Images/water.png", "Влажность:", (WeatherInstance.List[0].Humidity) + "%")
+            </li>
+            <li class="list-group-item row">
+                @WeatherEntry("~/Content/Images/weather-wind.png", "Скорость ветра:", (WeatherInstance.List[0].Speed) + " м/с")
             </li>
         </ul>
     </p>
