@@ -1,6 +1,5 @@
 ﻿@using BSWeather.Extensions
 @using BSWeather.Models
-@using BSWeather.Util
 @{
     ViewBag.Title = "Home Page";
     WeatherInstance = ViewBag.Weather;
@@ -49,7 +48,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
 string activeParameter = Days == days ? "active" : string.Empty;
     <div class="col-md-4">
         <div class="col-md-12 list-group-item">
-            <a href="@Url.Action("Index", "Home", new {Id = WeatherInstance.City.Id, Days = days})" type="button" class="btn btn-default btn-block btn-lg @activeParameter">
+            <a href="@Url.Action("Index", "Home", new {WeatherInstance.City.Id, Days = days})" type="button" class="btn btn-default btn-block btn-lg @activeParameter">
                 @title &raquo;
             </a>
         </div>

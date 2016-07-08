@@ -6,7 +6,7 @@ namespace BSWeather.Models
     {
         [Required(ErrorMessage = "Укажите, пожалуйста, название")]
         public string CityName { get; set; }
-
+        
         public int Days { get; set; } = 1;
     }
 }
