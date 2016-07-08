@@ -105,13 +105,6 @@ string activeParameter = Days == days ? "active" : string.Empty;
                             <div class="col-xs-1 col-height col-middle">
                                 <div class="inside">
                                     <div class="content">
-                                        <img src="@Url.Content("~/Content/Images/globe-green.png")" class="list-icon" />Описание:
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1 col-height col-middle">
-                                <div class="inside">
-                                    <div class="content">
                                         <img src="http://openweathermap.org/img/w/@(list.Weather[0].Icon).png" class="list-icon" />@(WeatherInstance.City.Name), @list.Weather[0].Description
                                     </div>
                                 </div>
