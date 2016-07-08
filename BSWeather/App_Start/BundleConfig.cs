@@ -25,7 +25,7 @@ namespace BSWeather
                       "~/Scripts/validator.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-united.css",
                       "~/Content/Site.css"));
         }
     }
