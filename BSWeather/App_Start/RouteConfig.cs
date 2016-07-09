@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Configuration;
+using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace BSWeather
@@ -12,7 +13,13 @@ namespace BSWeather
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}/{days}",
-                defaults: new { controller = "Home", action = "Index", id = 703448, days = 1 }
+                defaults: new
+                {
+                    controller = "Home",
+                    action = "Index",
+                    id = WebConfigurationManager.AppSettings["DefaultCityId"],
+                    days = WebConfigurationManager.AppSettings["DefaultDaysCount"]
+                }
             );
         }
     }
