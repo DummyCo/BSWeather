@@ -25,10 +25,11 @@ namespace BSWeather.Controllers
                 weather = service.GetWeatherByCityName(citySearch.CityName, actualDays);
             }
             
-            if (weather == null)
-            {
-                weather = service.GetWeatherById(703448, actualDays);
-            }
+            //Snippet to return default weather if smth went wrong
+            //if (weather == null)
+            //{
+            //    weather = service.GetWeatherById(703448, actualDays);
+            //}
 
             ViewData["Weather"] = weather;
             ViewData["Days"] = actualDays;
