@@ -32,7 +32,7 @@ namespace BSWeather.Infrastructure
         private void AddBindings()
         {
             _kernel.Bind<ILogger>().To<ThreadSafeLogger>().InSingletonScope();
-            _kernel.Bind<ILogPrinter>().To<DebugLogPrinter>();
+            _kernel.Bind<ILogPrinter>().To<DebugLogPrinter>().InSingletonScope();
         }
     }
 }

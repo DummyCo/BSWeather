@@ -19,6 +19,7 @@ namespace BSWeather.Controllers
 
         public ActionResult Index(int id, int days)
         {
+            _logger.Info("Index called");
             ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id, days);
             ViewData["Days"] = days;
 
@@ -28,6 +29,7 @@ namespace BSWeather.Controllers
         [HttpPost]
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
+            _logger.Info("SearchCityByName called");
             int actualDays = citySearch.Days;
             OpenWeatherBase.RootObject weather = null;
             var service = new OpenWeatherService();

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace BSWeather.Services.Logger
 {
@@ -6,7 +7,7 @@ namespace BSWeather.Services.Logger
     {
         public void Print(string message, MessageType messageType)
         {
-            Debug.Write(message);
+            Debug.Write(message + Environment.NewLine);
         }
 
         public void Clear()
