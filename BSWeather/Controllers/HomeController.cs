@@ -30,7 +30,7 @@ namespace BSWeather.Controllers
             _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");
             int actualDays = citySearch.Days;
             OpenWeatherBase.RootObject weather = null;
-            var service = new OpenWeatherService();
+            var service = DependencyResolver.Current.GetService<OpenWeatherService>();
             if (ModelState.IsValid)
             {
                 weather = service.GetWeatherByCityName(citySearch.CityName, actualDays);

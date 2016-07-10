@@ -32,7 +32,8 @@ namespace BSWeather.Infrastructure
         {
             _kernel.Bind<ILogger>().To<ThreadSafeLogger>().InSingletonScope();
             _kernel.Bind<ILogPrinter>().To<DebugLogPrinter>().InSingletonScope();
-            _kernel.Bind<OpenWeatherService>().ToSelf();
+            _kernel.Bind<OpenWeatherService>().ToSelf().InSingletonScope();
+            _kernel.Bind<AvailabilityCheckService>().ToSelf().InSingletonScope();
         }
     }
 }
