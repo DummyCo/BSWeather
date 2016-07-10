@@ -12,8 +12,8 @@ namespace BSWeather.Services
 {
     public class OpenWeatherService
     {
-        private static readonly string BaseUrl = "http://openweathermap.org";
-        private static readonly string ApiUrl = "http://api.openweathermap.org";
+        private const string BaseUrl = "http://openweathermap.org";
+        private const string ApiUrl = "http://api.openweathermap.org";
 
         [Inject]
         private ILogger Logger { get; set; }
