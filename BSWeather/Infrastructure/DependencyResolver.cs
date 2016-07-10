@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+using BSWeather.Services;
 using BSWeather.Services.Logger;
 using Ninject;
 
@@ -16,6 +14,7 @@ namespace BSWeather.Infrastructure
         public DependencyResolver(IKernel kernel)
         {
             _kernel = kernel;
+            _kernel.Settings.InjectNonPublic = true;
             AddBindings();
         }
 
@@ -33,6 +32,7 @@ namespace BSWeather.Infrastructure
         {
             _kernel.Bind<ILogger>().To<ThreadSafeLogger>().InSingletonScope();
             _kernel.Bind<ILogPrinter>().To<DebugLogPrinter>().InSingletonScope();
+            _kernel.Bind<OpenWeatherService>().ToSelf();
         }
     }
 }

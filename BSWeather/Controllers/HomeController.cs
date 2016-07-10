@@ -1,9 +1,7 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using BSWeather.Models;
 using BSWeather.Services;
 using BSWeather.Services.Logger;
-using Ninject;
 
 namespace BSWeather.Controllers
 {
@@ -20,7 +18,7 @@ namespace BSWeather.Controllers
         public ActionResult Index(int id, int days)
         {
             _logger.Info($"Index called with {id} id for {days} days");
-            ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id, days);
+            ViewData["Weather"] = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
             ViewData["Days"] = days;
 
             return View();
