@@ -1,11 +1,22 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using BSWeather.Models;
 using BSWeather.Services;
+using BSWeather.Services.Logger;
+using Ninject;
 
 namespace BSWeather.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ILogger _logger;
+
+        public HomeController(ILogger logger)
+        {
+            _logger = logger;
+            logger.Info("HomeController ctor");
+        }
+
         public ActionResult Index(int id, int days)
         {
             ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id, days);

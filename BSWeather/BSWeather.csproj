@@ -146,9 +146,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="Models\CitySearch.cs" />
     <Compile Include="Models\OpenWeatherBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AvailabilityCheckService.cs" />
+    <Compile Include="Services\Logger\ConsoleLogPrinter.cs" />
+    <Compile Include="Services\Logger\DebugLogPrinter.cs" />
+    <Compile Include="Services\Logger\FileLogPrinter.cs" />
+    <Compile Include="Services\Logger\ILogger.cs" />
+    <Compile Include="Services\Logger\ILogPrinter.cs" />
+    <Compile Include="Services\Logger\ThreadSafeLogger.cs" />
+    <Compile Include="Services\Logger\StreamWriterLogPrinter.cs" />
     <Compile Include="Services\OpenWeatherService.cs" />
     <Compile Include="Util\DateTimeUtils.cs" />
   </ItemGroup>
