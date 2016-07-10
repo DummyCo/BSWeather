@@ -19,7 +19,7 @@ namespace BSWeather.Controllers
 
         public ActionResult Index(int id, int days)
         {
-            _logger.Info("Index called");
+            _logger.Info($"Index called with {id} id for {days} days");
             ViewData["Weather"] = new OpenWeatherService().GetWeatherById(id, days);
             ViewData["Days"] = days;
 
@@ -29,7 +29,7 @@ namespace BSWeather.Controllers
         [HttpPost]
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
-            _logger.Info("SearchCityByName called");
+            _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");
             int actualDays = citySearch.Days;
             OpenWeatherBase.RootObject weather = null;
             var service = new OpenWeatherService();
@@ -37,31 +37,21 @@ namespace BSWeather.Controllers
             {
                 weather = service.GetWeatherByCityName(citySearch.CityName, actualDays);
             }
-            
+            else
+            {
+                _logger.Warning($"SearchCityByName invalid ModelState");
+            }
+
             //Snippet to return default weather if smth went wrong
-            //if (weather == null)
-            //{
-            //    weather = service.GetWeatherById(703448, actualDays);
-            //}
+            if (weather == null)
+            {
+                _logger.Warning($"SearchCityByName returned null weather");
+            }
 
             ViewData["Weather"] = weather;
             ViewData["Days"] = actualDays;
 
             return View("Index");
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
         }
     }
 }

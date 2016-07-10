@@ -5,7 +5,7 @@ namespace BSWeather.Services.Logger
 {
     public interface ILogger
     {
-        ILogPrinter LogPrinter { set; }
+        ILogPrinter LogPrinter { get; set; }
         void Info(string message);
         void Info(string tag, string message);
         void Debug(string message);
