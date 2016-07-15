@@ -14,10 +14,10 @@ namespace BSWeather.Infrastructure.Context
         {
             base.Seed(context);
 
-            var defaultCities = new List<City>()
+            var defaultCities = new List<City>
             {
-                new City() {Name = "Kiev"},
-                new City() {Name = "Lviv"}
+                new City {Name = "Kiev"},
+                new City {Name = "Lviv"}
             };
 
             context.Cities.AddRange(defaultCities);

@@ -55,9 +55,23 @@ namespace BSWeather.Controllers
             {
                 _logger.Warning($"SearchCityByName returned null weather");
             }
+            else
+            {
+                using (var context = new WeatherContext())
+                {
+                    context.Cities.Add(new City {ExternalId = weather.City.Id, Name = weather.City.Name});
+                }
+            }
+
+            List<City> favouriteCities;
+            using (var context = new WeatherContext())
+            {
+                favouriteCities = context.Cities.ToList();
+            }
 
             ViewData["Weather"] = weather;
             ViewData["Days"] = actualDays;
+            ViewData["FavouriteCities"] = favouriteCities;
 
             return View("Index");
         }

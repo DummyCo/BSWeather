@@ -4,11 +4,13 @@
     ViewBag.Title = "Home Page";
     WeatherInstance = ViewBag.Weather;
     Days = ViewBag.Days;
+    FavouriteCities = ViewBag.FavouriteCities;
 }
 @functions
 {
     public OpenWeatherBase.RootObject WeatherInstance;
     public int Days;
+    public List<City> FavouriteCities;
 }
 @helper WeatherButton(int id, string name)
 {
@@ -69,11 +71,15 @@ string activeParameter = Days == days ? "active" : string.Empty;
     <p class="lead">
         <div class="text-center">
             <div class="btn-group btn-group-lg" role="group">
-                @WeatherButton(703448, "Киев")
+                @foreach (var favouriteCity in FavouriteCities)
+                {
+                    @WeatherButton(favouriteCity.Id, favouriteCity.Name)
+                }
+                @*@WeatherButton(703448, "Киев")
                 @WeatherButton(702550, "Львов")
                 @WeatherButton(706483, "Харьков")
                 @WeatherButton(709930, "Днепропетровск")
-                @WeatherButton(698740, "Одесса")
+                @WeatherButton(698740, "Одесса")*@
             </div>
         </div>
     </p>
