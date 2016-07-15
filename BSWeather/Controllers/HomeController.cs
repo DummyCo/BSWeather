@@ -23,12 +23,15 @@ namespace BSWeather.Controllers
             _logger.Info($"Index called with {id} id for {days} days");
 
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
+            var weather = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
 
             bsWeatherService.FillViewData(
                 ViewData,
-                DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days),
+                weather,
                 days
             );
+
+            bsWeatherService.AddToHistory(weather.City.Name);
 
             return View();
         }
@@ -56,6 +59,10 @@ namespace BSWeather.Controllers
             {
                 _logger.Warning($"SearchCityByName returned null weather");
             }
+            else
+            {
+                bsWeatherService.AddToHistory(weather.City.Name);
+            }
 
             bsWeatherService.FillViewData(ViewData, weather, citySearch.Days);
 
@@ -65,7 +72,7 @@ namespace BSWeather.Controllers
         public ActionResult AddToFavourites(int id, string cityName, int days)
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            bsWeatherService.AddToHistrory(id, cityName);
+            bsWeatherService.AddToFavourites(id, cityName);
 
             return RedirectToAction("SearchCityByName", new CitySearch { CityName = cityName, Days = days} );
         }
@@ -73,9 +80,19 @@ namespace BSWeather.Controllers
         public ActionResult RemoveFromFavourites(int id, string cityName, int days)
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            bsWeatherService.RemoveFromHistrory(id, cityName);
+            bsWeatherService.RemoveFromFavourites(id, cityName);
 
             return RedirectToAction("Index", new { days });
+        }
+
+        public ActionResult SearchHistroy()
+        {
+            var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
+            var records = bsWeatherService.GetSearchHistoryRecords();
+            records.Reverse();
+
+            ViewData["SearchHistoryRecords"] = records;
+            return View("SearchHistroy");
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿@using BSWeather.Models
+
+@{
+    ViewBag.Title = "Search Histroy";
+    SearchHistoryRecords = ViewBag.SearchHistoryRecords;
+}
+@functions
+{
+    public List<SearchHistoryRecord> SearchHistoryRecords;
+}
+
+<div class="jumbotron">
+    <h1>BSWeather</h1>
+    <h2>Search Histroy</h2>
+
+    <p>
+        <ul class="list-group">
+            @foreach (var searchHistoryRecord in SearchHistoryRecords)
+            {
+                <li class="list-group-item">
+                    @searchHistoryRecord.DateTime - @searchHistoryRecord.CityName
+                </li>
+            }
+        </ul>
+    </p>
+</div>

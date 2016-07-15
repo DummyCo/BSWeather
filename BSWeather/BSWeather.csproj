@@ -160,6 +160,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\CitySearch.cs" />
     <Compile Include="Models\OpenWeatherBase.cs" />
+    <Compile Include="Models\SearchHistoryRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AvailabilityCheckService.cs" />
     <Compile Include="Services\BsWeatherService.cs" />
@@ -231,6 +232,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\SearchHistroy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

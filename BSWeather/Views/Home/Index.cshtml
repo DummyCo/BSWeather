@@ -124,7 +124,9 @@ string activeParameter = Days == days ? "active" : string.Empty;
                 {
                     if (WeatherInstance != null)
                     {
-                        <a href="@Url.Action("AddToFavourites", "Home", new { WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days })" type="button" class="btn btn-default btn-block btn-lg">
+                        string disabledParameter = FavouriteCities.Count >=6 ? "disabled" : string.Empty;
+
+                        <a href="@Url.Action("AddToFavourites", "Home", new { WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days })" type="button" class="btn btn-default btn-block btn-lg @disabledParameter">
                             В избранное &raquo;
                         </a>
                     }

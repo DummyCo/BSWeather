@@ -11,6 +11,7 @@ namespace BSWeather.Infrastructure.Context
     public class WeatherContext : DbContext
     {
         public DbSet<City> Cities { get; set; }
+        public DbSet<SearchHistoryRecord> SearchHistoryRecords { get; set; }
 
         public WeatherContext() : base("WeatherContext")
         {
