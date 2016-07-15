@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
 using BSWeather.Services;
 using BSWeather.Services.Logger;
@@ -17,9 +20,16 @@ namespace BSWeather.Controllers
 
         public ActionResult Index(int id, int days)
         {
+            List<City> favouriteCities;
+            using (var context = new WeatherContext())
+            {
+                favouriteCities = context.Cities.ToList();
+            }
+
             _logger.Info($"Index called with {id} id for {days} days");
             ViewData["Weather"] = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
             ViewData["Days"] = days;
+            ViewData["FavouriteCities"] = favouriteCities;
 
             return View();
         }

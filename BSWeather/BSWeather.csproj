@@ -154,7 +154,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Context\WeatherContexInitializer.cs" />
+    <Compile Include="Infrastructure\Context\WeatherContext.cs" />
     <Compile Include="Infrastructure\DependencyResolver.cs" />
+    <Compile Include="Models\City.cs" />
     <Compile Include="Models\CitySearch.cs" />
     <Compile Include="Models\OpenWeatherBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
