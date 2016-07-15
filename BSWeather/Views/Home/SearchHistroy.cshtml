@@ -18,7 +18,15 @@
             @foreach (var searchHistoryRecord in SearchHistoryRecords)
             {
                 <li class="list-group-item">
-                    @searchHistoryRecord.DateTime - @searchHistoryRecord.CityName
+                    <div class="row-height">
+                        <div class="col-xs-1 col-height col-middle">
+                            <div class="inside">
+                                <div class="content">
+                                    <img src="@Url.Content("~/Content/Images/clock.png")" class="list-icon" /> @searchHistoryRecord.DateTime – @searchHistoryRecord.CityName
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             }
         </ul>

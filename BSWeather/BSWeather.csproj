@@ -182,8 +182,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\calendar-month.png" />
+    <Content Include="Content\Images\clock.png" />
     <Content Include="Content\Images\counter.png" />
     <Content Include="Content\Images\globe-green.png" />
+    <Content Include="Content\Images\map.png" />
     <Content Include="Content\Images\thermometer.png" />
     <Content Include="Content\Images\umbrella.png" />
     <Content Include="Content\Images\water.png" />

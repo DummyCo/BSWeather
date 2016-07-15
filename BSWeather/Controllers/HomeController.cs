@@ -91,7 +91,7 @@ namespace BSWeather.Controllers
             var records = bsWeatherService.GetSearchHistoryRecords();
             records.Reverse();
 
-            ViewData["SearchHistoryRecords"] = records;
+            ViewData["SearchHistoryRecords"] = records.Take(20).ToList();
             return View("SearchHistroy");
         }
     }
