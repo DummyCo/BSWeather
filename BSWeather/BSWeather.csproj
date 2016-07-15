@@ -162,6 +162,7 @@
     <Compile Include="Models\OpenWeatherBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AvailabilityCheckService.cs" />
+    <Compile Include="Services\BsWeatherService.cs" />
     <Compile Include="Services\Logger\ConsoleLogPrinter.cs" />
     <Compile Include="Services\Logger\DebugLogPrinter.cs" />
     <Compile Include="Services\Logger\FileLogPrinter.cs" />

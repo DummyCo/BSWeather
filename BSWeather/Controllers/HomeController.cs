@@ -20,16 +20,15 @@ namespace BSWeather.Controllers
 
         public ActionResult Index(int id, int days)
         {
-            List<City> favouriteCities;
-            using (var context = new WeatherContext())
-            {
-                favouriteCities = context.Cities.ToList();
-            }
-
             _logger.Info($"Index called with {id} id for {days} days");
-            ViewData["Weather"] = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
-            ViewData["Days"] = days;
-            ViewData["FavouriteCities"] = favouriteCities;
+
+            var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
+
+            bsWeatherService.FillViewData(
+                ViewData,
+                DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days),
+                days
+            );
 
             return View();
         }
@@ -38,12 +37,14 @@ namespace BSWeather.Controllers
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
             _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");
-            int actualDays = citySearch.Days;
+
+            var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
+            var openWeatherService = DependencyResolver.Current.GetService<OpenWeatherService>();
+
             OpenWeatherBase.RootObject weather = null;
-            var service = DependencyResolver.Current.GetService<OpenWeatherService>();
             if (ModelState.IsValid)
             {
-                weather = service.GetWeatherByCityName(citySearch.CityName, actualDays);
+                weather = openWeatherService.GetWeatherByCityName(citySearch.CityName, citySearch.Days);
             }
             else
             {
@@ -57,31 +58,10 @@ namespace BSWeather.Controllers
             }
             else
             {
-                using (var context = new WeatherContext())
-                {
-                    bool contains = context.Cities.Any(city => city.ExternalIdentifier == weather.City.Id);
-                    if (!contains)
-                    {
-                        context.Cities.Add(new City
-                        {
-                            ExternalIdentifier = weather.City.Id,
-                            Name = weather.City.Name
-                        });
-                        context.SaveChanges();
-                    }
-                }
+                bsWeatherService.AddToHistrory(weather.City.Id, weather.City.Name);
             }
 
-            List<City> favouriteCities;
-            using (var context = new WeatherContext())
-            {
-                favouriteCities = context.Cities.ToList();
-            }
-
-            ViewData["Weather"] = weather;
-            ViewData["Days"] = actualDays;
-            ViewData["FavouriteCities"] = favouriteCities;
-
+            bsWeatherService.FillViewData(ViewData, weather, citySearch.Days);
             return View("Index");
         }
     }
