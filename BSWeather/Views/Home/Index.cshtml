@@ -11,6 +11,8 @@
     public OpenWeatherBase.RootObject WeatherInstance;
     public int Days;
     public List<City> FavouriteCities;
+
+    public bool FavouriteCitySelected;
 }
 @helper WeatherButton(int id, string name)
 {
@@ -18,6 +20,11 @@
 }
 @helper WeatherButton(int id, string name, string glyph)
 {
+bool currentCitySelected = (WeatherInstance != null && WeatherInstance.City.Id == id);
+if (!FavouriteCitySelected && currentCitySelected)
+{
+    FavouriteCitySelected = true;
+}
 string activeParameter = (WeatherInstance != null && WeatherInstance.City.Id == id) ? "active" : string.Empty;
 string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" style=\"padding-left: 4px;\"></span>" : string.Empty;
     <a href="@Url.Action("Index", "Home", new { id, days = Days })" type="button" class="btn btn-default @activeParameter">
@@ -48,7 +55,7 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
 @helper DaysButton(string title, int days)
 {
 string activeParameter = Days == days ? "active" : string.Empty;
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="col-md-12 list-group-item">
             @if (WeatherInstance != null)
             {
@@ -104,6 +111,32 @@ string activeParameter = Days == days ? "active" : string.Empty;
         @DaysButton("Погода на сегодня", 1)
         @DaysButton("Погода на три дня", 3)
         @DaysButton("Погода на неделю", 7)
+
+        <div class="col-md-3">
+            <div class="col-md-12 list-group-item">
+                @if (FavouriteCitySelected)
+                {
+                    <a href="@Url.Action("RemoveFromFavourites", "Home", new { WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days })" type="button" class="btn btn-default btn-block btn-lg">
+                        Удалить &raquo;
+                    </a>
+                }
+                else
+                {
+                    if (WeatherInstance != null)
+                    {
+                        <a href="@Url.Action("AddToFavourites", "Home", new { WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days })" type="button" class="btn btn-default btn-block btn-lg">
+                            В избранное &raquo;
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" type="button" class="btn btn-default btn-block btn-lg disabled">
+                            В избранное &raquo;
+                        </a>
+                    }
+                }
+            </div>
+        </div>
     </div>
     @if (WeatherInstance != null)
     {

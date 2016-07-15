@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,16 @@ namespace BSWeather.Services
                     });
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public void RemoveFromHistrory(int cityId, string cityName)
+        {
+            using (var context = new WeatherContext())
+            {
+                var cityToRemove = context.Cities.First(city => city.ExternalIdentifier == cityId);
+                context.Cities.Remove(cityToRemove);
+                context.SaveChanges();
             }
         }
     }

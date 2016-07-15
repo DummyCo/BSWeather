@@ -56,13 +56,26 @@ namespace BSWeather.Controllers
             {
                 _logger.Warning($"SearchCityByName returned null weather");
             }
-            else
-            {
-                bsWeatherService.AddToHistrory(weather.City.Id, weather.City.Name);
-            }
 
             bsWeatherService.FillViewData(ViewData, weather, citySearch.Days);
+
             return View("Index");
+        }
+
+        public ActionResult AddToFavourites(int id, string cityName, int days)
+        {
+            var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
+            bsWeatherService.AddToHistrory(id, cityName);
+
+            return RedirectToAction("SearchCityByName", new CitySearch { CityName = cityName, Days = days} );
+        }
+
+        public ActionResult RemoveFromFavourites(int id, string cityName, int days)
+        {
+            var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
+            bsWeatherService.RemoveFromHistrory(id, cityName);
+
+            return RedirectToAction("Index", new { days });
         }
     }
 }
