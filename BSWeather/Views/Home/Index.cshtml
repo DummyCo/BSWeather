@@ -20,7 +20,10 @@
 {
 string activeParameter = (WeatherInstance != null && WeatherInstance.City.Id == id) ? "active" : string.Empty;
 string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" style=\"padding-left: 4px;\"></span>" : string.Empty;
-    <a href="@Url.Action("Index", "Home", new { id, days = Days })" type="button" class="btn btn-default @activeParameter">
+    @*<a href="@Url.Action("Index", "Home", new { id, days = Days })" type="button" class="btn btn-default @activeParameter">
+        @name@Html.Raw(spanGlyph)
+    </a>*@
+    <a href="@Url.Action("SearchCityByName", "Home", new { CityName = name, Days })" type="button" class="btn btn-default @activeParameter">
         @name@Html.Raw(spanGlyph)
     </a>
 }
@@ -73,7 +76,7 @@ string activeParameter = Days == days ? "active" : string.Empty;
             <div class="btn-group btn-group-lg" role="group">
                 @foreach (var favouriteCity in FavouriteCities)
                 {
-                    @WeatherButton(favouriteCity.Id, favouriteCity.Name)
+                    @WeatherButton(favouriteCity.ExternalIdentifier, favouriteCity.Name)
                 }
                 @*@WeatherButton(703448, "Киев")
                 @WeatherButton(702550, "Львов")

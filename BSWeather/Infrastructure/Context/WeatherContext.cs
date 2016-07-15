@@ -12,7 +12,7 @@ namespace BSWeather.Infrastructure.Context
     {
         public DbSet<City> Cities { get; set; }
 
-        public WeatherContext()
+        public WeatherContext() : base("WeatherContext")
         {
             Database.SetInitializer(new WeatherContexInitializer());
         }

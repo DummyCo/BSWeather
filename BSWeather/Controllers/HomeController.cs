@@ -34,7 +34,7 @@ namespace BSWeather.Controllers
             return View();
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
             _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");
@@ -57,10 +57,10 @@ namespace BSWeather.Controllers
             }
             else
             {
-                using (var context = new WeatherContext())
-                {
-                    context.Cities.Add(new City {ExternalId = weather.City.Id, Name = weather.City.Name});
-                }
+                //using (var context = new WeatherContext())
+                //{
+                //    context.Cities.Add(new City {ExternalId = weather.City.Id, Name = weather.City.Name});
+                //}
             }
 
             List<City> favouriteCities;
