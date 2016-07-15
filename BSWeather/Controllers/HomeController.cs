@@ -57,10 +57,19 @@ namespace BSWeather.Controllers
             }
             else
             {
-                //using (var context = new WeatherContext())
-                //{
-                //    context.Cities.Add(new City {ExternalId = weather.City.Id, Name = weather.City.Name});
-                //}
+                using (var context = new WeatherContext())
+                {
+                    bool contains = context.Cities.Any(city => city.ExternalIdentifier == weather.City.Id);
+                    if (!contains)
+                    {
+                        context.Cities.Add(new City
+                        {
+                            ExternalIdentifier = weather.City.Id,
+                            Name = weather.City.Name
+                        });
+                        context.SaveChanges();
+                    }
+                }
             }
 
             List<City> favouriteCities;

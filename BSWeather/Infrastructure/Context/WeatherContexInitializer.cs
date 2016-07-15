@@ -17,7 +17,10 @@ namespace BSWeather.Infrastructure.Context
             var defaultCities = new List<City>
             {
                 new City {Name = "Kiev", ExternalIdentifier = 703448},
-                new City {Name = "Lviv", ExternalIdentifier = 702550}
+                new City {Name = "Lviv", ExternalIdentifier = 702550},
+                new City {Name = "Kharkiv", ExternalIdentifier = 706483},
+                new City {Name = "Dnipropetrovsk", ExternalIdentifier = 709930},
+                new City {Name = "Odessa", ExternalIdentifier = 698740},
             };
 
             context.Cities.AddRange(defaultCities);
