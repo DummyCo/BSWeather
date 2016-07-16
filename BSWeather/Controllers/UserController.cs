@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebGrease.Css.Extensions;
+using DependencyResolver = System.Web.Mvc.DependencyResolver;
 
 namespace BSWeather.Controllers
 {
@@ -74,7 +75,7 @@ namespace BSWeather.Controllers
                         identity
                     );
 
-                    using (var context = new WeatherContext())
+                    using (var context = DependencyResolver.Current.GetService<WeatherContext>())
                     {
                         context.Users.Attach(user);
                         context.Cities.Take(5).ForEach(user.Cities.Add);
@@ -95,15 +96,17 @@ namespace BSWeather.Controllers
 
         public ActionResult SignIn(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = UserManager.Find(model.Email, model.Password);
-                if (user != null)
+                return Redirect(model.PreviousUrl);
+            }
+
+            var user = UserManager.Find(model.Email, model.Password);
+            if (user != null)
+            {
+                if (!UserManager.IsEmailConfirmed(user.Id))
                 {
-                    if (!UserManager.IsEmailConfirmed(user.Id))
-                    {
-                        //...
-                    }
+                    //...
                 }
             }
 
@@ -130,8 +133,5 @@ namespace BSWeather.Controllers
             Request.GetOwinContext().Authentication.SignOut();
             return Redirect(previousUrl);
         }
-
-
-
     }
 }

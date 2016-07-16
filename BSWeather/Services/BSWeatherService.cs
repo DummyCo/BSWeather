@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
 
@@ -12,7 +13,7 @@ namespace BSWeather.Services
         {
             get
             {
-                using (var context = new WeatherContext())
+                using (var context = DependencyResolver.Current.GetService<WeatherContext>())
                 {
                     return context.Cities.ToList().GetRange(0, 5);
                 }
@@ -21,7 +22,7 @@ namespace BSWeather.Services
 
         public City TrackCity(int cityId, string cityName)
         {
-            using (var context = new WeatherContext())
+            using (var context = DependencyResolver.Current.GetService<WeatherContext>())
             {
                 var city = context.Cities.FirstOrDefault(c => c.ExternalIdentifier == cityId);
                 if (city == null)

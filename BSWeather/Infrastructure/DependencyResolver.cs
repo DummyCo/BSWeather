@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using BSWeather.Infrastructure.Context;
 using BSWeather.Services;
 using BSWeather.Services.Logger;
 using Ninject;
@@ -35,6 +36,7 @@ namespace BSWeather.Infrastructure
             _kernel.Bind<OpenWeatherService>().ToSelf().InTransientScope();
             _kernel.Bind<BsWeatherService>().ToSelf().InTransientScope();
             _kernel.Bind<AvailabilityCheckService>().ToSelf().InTransientScope();
+            _kernel.Bind<WeatherContext>().ToSelf().InTransientScope();
         }
     }
 }
