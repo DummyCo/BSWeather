@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
 using BSWeather.Infrastructure.ActionFilterAttributes;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
-using BSWeather.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebGrease.Css.Extensions;
-using DependencyResolver = System.Web.Mvc.DependencyResolver;
 
 namespace BSWeather.Controllers
 {
