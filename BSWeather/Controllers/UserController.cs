@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
+using BSWeather.Infrastructure.ActionFilterAttributes;
+using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -123,27 +125,7 @@ namespace BSWeather.Controllers
             return Redirect(previousUrl);
         }
 
-        public class SetTempDataModelStateAttribute : ActionFilterAttribute
-        {
-            public override void OnActionExecuted(ActionExecutedContext filterContext)
-            {
-                base.OnActionExecuted(filterContext);
-                filterContext.Controller.TempData["ModelState"] =
-                   filterContext.Controller.ViewData.ModelState;
-            }
-        }
 
-        public class RestoreModelStateFromTempDataAttribute : ActionFilterAttribute
-        {
-            public override void OnActionExecuting(ActionExecutingContext filterContext)
-            {
-                base.OnActionExecuting(filterContext);
-                if (filterContext.Controller.TempData.ContainsKey("ModelState"))
-                {
-                    filterContext.Controller.ViewData.ModelState.Merge(
-                        (ModelStateDictionary)filterContext.Controller.TempData["ModelState"]);
-                }
-            }
-        }
+
     }
 }

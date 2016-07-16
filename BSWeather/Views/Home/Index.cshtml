@@ -52,10 +52,10 @@ string spanGlyph = glyph != null ? "<span class=\"glyphicon " + glyph + "\" styl
         </div>
     </div>
 }
-@helper DaysButton(string title, int days)
+@helper DaysButton(string title, int days, int columnWidth)
 {
 string activeParameter = Days == days ? "active" : string.Empty;
-    <div class="col-md-3">
+    <div class="col-md-@columnWidth">
         <div class="col-md-12 list-group-item">
             @if (WeatherInstance != null)
             {
@@ -108,37 +108,44 @@ string activeParameter = Days == days ? "active" : string.Empty;
         </div>
     </p>
     <div class="row">
-        @DaysButton("Погода на сегодня", 1)
-        @DaysButton("Погода на три дня", 3)
-        @DaysButton("Погода на неделю", 7)
+        @{
+            int columnWidth = Request.IsAuthenticated ? 3 : 4;
+        }
 
-        <div class="col-md-3">
-            <div class="col-md-12 list-group-item">
-                @if (FavouriteCitySelected)
-                {
-                    <a href="@Url.Action("RemoveFromFavourites", "Home", new { WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days })" type="button" class="btn btn-default btn-block btn-lg">
-                        Удалить &raquo;
-                    </a>
-                }
-                else
-                {
-                    if (WeatherInstance != null)
+        @DaysButton("Погода на сегодня", 1, columnWidth)
+        @DaysButton("Погода на три дня", 3, columnWidth)
+        @DaysButton("Погода на неделю", 7, columnWidth)
+
+        @if (Request.IsAuthenticated)
+        {
+            <div class="col-md-3">
+                <div class="col-md-12 list-group-item">
+                    @if (FavouriteCitySelected)
                     {
-                        string disabledParameter = FavouriteCities.Count >=6 ? "disabled" : string.Empty;
-
-                        <a href="@Url.Action("AddToFavourites", "Home", new { WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days })" type="button" class="btn btn-default btn-block btn-lg @disabledParameter">
-                            В избранное &raquo;
+                        <a href="@Url.Action("RemoveFromFavourites", "Home", new {WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days})" type="button" class="btn btn-default btn-block btn-lg">
+                            Удалить &raquo;
                         </a>
                     }
                     else
                     {
-                        <a href="#" type="button" class="btn btn-default btn-block btn-lg disabled">
-                            В избранное &raquo;
-                        </a>
+                        if (WeatherInstance != null)
+                        {
+                            string disabledParameter = FavouriteCities.Count >= 6 ? "disabled" : string.Empty;
+
+                            <a href="@Url.Action("AddToFavourites", "Home", new {WeatherInstance.City.Id, cityName = WeatherInstance.City.Name, Days})" type="button" class="btn btn-default btn-block btn-lg @disabledParameter">
+                                В избранное &raquo;
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" type="button" class="btn btn-default btn-block btn-lg disabled">
+                                В избранное &raquo;
+                            </a>
+                        }
                     }
-                }
+                </div>
             </div>
-        </div>
+        }
     </div>
     @if (WeatherInstance != null)
     {

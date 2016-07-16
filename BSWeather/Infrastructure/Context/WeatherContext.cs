@@ -18,5 +18,20 @@ namespace BSWeather.Infrastructure.Context
         {
             Database.SetInitializer(new WeatherContexInitializer());
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Cities)
+                .WithMany(c => c.Users)
+                .Map(us =>
+                {
+                    us.MapLeftKey("UserRefId");
+                    us.MapRightKey("CityRefId");
+                    us.ToTable("UserCity");
+                });
+        }
     }
 }

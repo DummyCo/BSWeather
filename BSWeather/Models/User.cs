@@ -9,6 +9,11 @@ namespace BSWeather.Models
 {
     public class User : IdentityUser
     {
+        public User()
+        {
+            Cities = new HashSet<City>();
+        }
 
+        public virtual ICollection<City> Cities { get; set; }
     }
 }

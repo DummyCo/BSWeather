@@ -192,6 +192,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ActionFilterAttributes\RestoreModelStateFromTempDataAttribute.cs" />
+    <Compile Include="Infrastructure\ActionFilterAttributes\SetTempDataModelStateAttribute.cs" />
     <Compile Include="Infrastructure\Context\WeatherContexInitializer.cs" />
     <Compile Include="Infrastructure\Context\WeatherContext.cs" />
     <Compile Include="Infrastructure\DependencyResolver.cs" />

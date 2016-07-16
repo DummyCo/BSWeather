@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using BSWeather.Infrastructure;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
 
@@ -12,47 +13,34 @@ namespace BSWeather.Services
 {
     public class BsWeatherService
     {
-        public void FillViewData(ViewDataDictionary viewData, OpenWeatherBase.RootObject weather, int days)
+        public List<City> DeafultFavouriteCities
         {
-            List<City> favouriteCities;
-            using (var context = new WeatherContext())
+            get
             {
-                favouriteCities = context.Cities.ToList();
+                using (var context = new WeatherContext())
+                {
+                    return context.Cities.ToList().GetRange(0, 5);
+                }
             }
-
-            viewData["Weather"] = weather;
-            viewData["Days"] = days;
-            viewData["FavouriteCities"] = favouriteCities;
         }
 
-        public void AddToFavourites(int cityId, string cityName)
+        public City TrackCity(int cityId, string cityName)
         {
             using (var context = new WeatherContext())
             {
-                if (context.Cities.Count() >= 6)
+                var city = context.Cities.FirstOrDefault(c => c.ExternalIdentifier == cityId);
+                if (city == null)
                 {
-                    return;
-                }
-                bool contains = context.Cities.Any(city => city.ExternalIdentifier == cityId);
-                if (!contains)
-                {
-                    context.Cities.Add(new City
+                    var newCity = new City
                     {
                         ExternalIdentifier = cityId,
                         Name = cityName
-                    });
+                    };
+                    context.Cities.Add(newCity);
                     context.SaveChanges();
+                    return newCity;
                 }
-            }
-        }
-
-        public void RemoveFromFavourites(int cityId, string cityName)
-        {
-            using (var context = new WeatherContext())
-            {
-                var cityToRemove = context.Cities.First(city => city.ExternalIdentifier == cityId);
-                context.Cities.Remove(cityToRemove);
-                context.SaveChanges();
+                return city;
             }
         }
 
