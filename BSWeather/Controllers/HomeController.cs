@@ -71,8 +71,7 @@ namespace BSWeather.Controllers
 
             return View();
         }
-
-        //[HttpPost]
+        
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
             _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");

@@ -1,5 +1,6 @@
 ﻿@using BSWeather.Extensions
 @using BSWeather.Models
+@model CitySearch
 @{
     ViewBag.Title = "Home Page";
     WeatherInstance = ViewBag.Weather;
@@ -89,7 +90,6 @@ string activeParameter = Days == days ? "active" : string.Empty;
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
-                    @model CitySearch
                     @using (Html.BeginForm("SearchCityByName", "Home", FormMethod.Post, new { Class = "form-horizontal" }))
                     {
                         <div class="form-group">
