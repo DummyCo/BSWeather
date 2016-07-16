@@ -124,8 +124,11 @@ namespace BSWeather.Controllers
             Context.Users.Attach(user);
             Context.Cities.Attach(city);
 
-            user.Cities.Add(city);
-            city.Users.Add(user);
+            if (user.Cities.Count < 6)
+            {
+                user.Cities.Add(city);
+                city.Users.Add(user);
+            }
 
             Context.SaveChanges();
 

@@ -7,9 +7,11 @@ using BSWeather.Infrastructure;
 using BSWeather.Infrastructure.ActionFilterAttributes;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
+using BSWeather.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using DependencyResolver = System.Web.Mvc.DependencyResolver;
 
 namespace BSWeather.Controllers
 {
@@ -58,10 +60,13 @@ namespace BSWeather.Controllers
         {
             if (ModelState.IsValid)
             {
+                var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
+
                 var user = new User
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    Cities = bsWeatherService.DeafultFavouriteCities
                 };
 
                 var result = UserManager.Create(user, model.Password);
