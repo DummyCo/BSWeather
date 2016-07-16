@@ -22,18 +22,21 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("История поиска", "SearchHistroy", "Home")</li>
-
-                    @if (Request.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Выход", "SignOut", "User")</li>
-                    }
                 </ul>
 
-                @model BSWeather.Models.LoginViewModel
+
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Выход", "SignOut", "User", new { PreviousUrl = Request.RawUrl }, null)</li>
+                    </ul>
+                }
+
                 @if (!Request.IsAuthenticated)
                 {
                     using (Html.BeginForm("SignIn", "User", FormMethod.Post, new { Class = "navbar-form navbar-right", Role = "search" }))
                     {
+                        @model BSWeather.Models.LoginViewModel
                         @Html.AntiForgeryToken()
 
                         <div class="form-group">
@@ -42,9 +45,11 @@
                         </div>
 
                         <div class="form-group">
-                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Password) })
-                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            @Html.PasswordFor(model => model.Password, new {@class = "form-control", @placeholder = Html.DisplayNameFor(model => model.Password)})
+                            @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
                         </div>
+
+                        @Html.Hidden("PreviousUrl", Request.RawUrl)
 
                         <div class="form-group">
                             <input type="submit" value="Войти" class="btn btn-default" />

@@ -98,22 +98,22 @@ namespace BSWeather.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(model.PreviousUrl);
                 case SignInStatus.LockedOut:
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(model.PreviousUrl);
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(model.PreviousUrl);
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    return View("Index");
+                    return Redirect(model.PreviousUrl);
             }
         }
 
-        public ActionResult SignOut()
+        public ActionResult SignOut(string previousUrl)
         {
             Request.GetOwinContext().Authentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return Redirect(previousUrl);
         }
     }
 }
