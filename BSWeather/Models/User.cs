@@ -12,8 +12,11 @@ namespace BSWeather.Models
         public User()
         {
             Cities = new HashSet<City>();
+            SearchHistoryRecords = new HashSet<SearchHistoryRecord>();
         }
 
         public virtual ICollection<City> Cities { get; set; }
+
+        public virtual ICollection<SearchHistoryRecord> SearchHistoryRecords { get; set; }
     }
 }

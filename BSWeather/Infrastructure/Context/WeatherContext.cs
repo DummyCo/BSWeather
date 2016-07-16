@@ -32,6 +32,13 @@ namespace BSWeather.Infrastructure.Context
                     us.MapRightKey("CityRefId");
                     us.ToTable("UserCity");
                 });
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.SearchHistoryRecords)
+                .WithRequired(s => s.User);
+
+            modelBuilder.Entity<SearchHistoryRecord>()
+                .HasRequired(s => s.City);
         }
     }
 }

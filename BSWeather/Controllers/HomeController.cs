@@ -55,13 +55,15 @@ namespace BSWeather.Controllers
 
             var weather = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            bsWeatherService.AddToHistory(weather.City.Name);
-
+            var city = bsWeatherService.TrackCity(id, weather.City.Name);
             var user = UserManager.FindById(User.Identity.GetUserId());
+
             ViewData["Weather"] = weather;
             ViewData["Days"] = days;
+
             if (user != null)
             {
+                bsWeatherService.AddToHistory(Context, user, city);
                 ViewData["FavouriteCities"] = user.Cities.ToList();
             }
             else
@@ -78,6 +80,7 @@ namespace BSWeather.Controllers
 
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
             var openWeatherService = DependencyResolver.Current.GetService<OpenWeatherService>();
+            var user = UserManager.FindById(User.Identity.GetUserId());
 
             OpenWeatherBase.RootObject weather = null;
             if (ModelState.IsValid)
@@ -94,12 +97,12 @@ namespace BSWeather.Controllers
             {
                 _logger.Warning($"SearchCityByName returned null weather");
             }
-            else
+            else if (user != null)
             {
-                bsWeatherService.AddToHistory(weather.City.Name);
+                var city = bsWeatherService.TrackCity(weather.City.Id, weather.City.Name);
+                bsWeatherService.AddToHistory(Context, user, city);
             }
 
-            var user = UserManager.FindById(User.Identity.GetUserId());
             ViewData["Weather"] = weather;
             ViewData["Days"] = citySearch.Days;
             if (user != null) { 
@@ -138,11 +141,18 @@ namespace BSWeather.Controllers
         public ActionResult SearchHistroy()
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            var records = bsWeatherService.GetSearchHistoryRecords();
-            records.Reverse();
+            var user = UserManager.FindById(User.Identity.GetUserId());
 
-            ViewData["SearchHistoryRecords"] = records.Take(20).ToList();
-            return View("SearchHistroy");
+            if (user != null)
+            {
+                var records = bsWeatherService.GetSearchHistoryRecords(Context, user);
+                records.Reverse();
+
+                ViewData["SearchHistoryRecords"] = records.Take(20).ToList();
+                return View("SearchHistroy");
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

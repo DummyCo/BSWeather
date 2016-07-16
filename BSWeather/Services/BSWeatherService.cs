@@ -71,21 +71,23 @@ namespace BSWeather.Services
             context.SaveChanges();
         }
 
-        public List<SearchHistoryRecord> GetSearchHistoryRecords()
+        public List<SearchHistoryRecord> GetSearchHistoryRecords(WeatherContext context, User user)
         {
-            using (var context = new WeatherContext())
-            {
-                return context.SearchHistoryRecords.ToList();
-            }
+            context.Users.Attach(user);
+            return user.SearchHistoryRecords.ToList();
         }
 
-        public void AddToHistory(string cityName)
+        public void AddToHistory(WeatherContext context, User user, City city)
         {
-            using (var context = new WeatherContext())
-            {
-                context.SearchHistoryRecords.Add(new SearchHistoryRecord { CityName = cityName, DateTime = DateTime.Now });
-                context.SaveChanges();
-            }
+            context.Users.Attach(user);
+            context.Cities.Attach(city);
+
+            var record = new SearchHistoryRecord { User = user, City = city, DateTime = DateTime.Now};
+
+            context.SearchHistoryRecords.Add(record);
+            user.SearchHistoryRecords.Add(record);
+
+            context.SaveChanges();
         }
     }
 }

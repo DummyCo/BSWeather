@@ -10,8 +10,10 @@ namespace BSWeather.Models
     {
         public int Id { get; set; }
 
-        public string CityName { get; set; }
-
         public DateTime DateTime { get; set; }
+
+        public virtual City City { get; set; }
+
+        public virtual User User { get; set; }
     }
 }
