@@ -186,6 +186,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Extensions\AttributeExtensions.cs" />
     <Compile Include="Extensions\OpenWeatherBaseExtensions.cs" />
     <Compile Include="Global.asax.cs">
@@ -194,7 +195,10 @@
     <Compile Include="Infrastructure\Context\WeatherContexInitializer.cs" />
     <Compile Include="Infrastructure\Context\WeatherContext.cs" />
     <Compile Include="Infrastructure\DependencyResolver.cs" />
+    <Compile Include="Infrastructure\WeateherSignInManager.cs" />
     <Compile Include="Infrastructure\UserManager.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\RegistrationViewModel.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\CitySearch.cs" />
@@ -275,6 +279,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\SearchHistroy.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

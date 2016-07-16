@@ -16,6 +16,7 @@ namespace BSWeather
         {
             app.CreatePerOwinContext(() => new WeatherContext());
             app.CreatePerOwinContext<UserManager>(UserManager.Create);
+            app.CreatePerOwinContext<SignInManager>(SignInManager.Create);
             app.CreatePerOwinContext<RoleManager<Role>>((options, context) =>
                 new RoleManager<Role>(
                     new RoleStore<Role>(context.Get<WeatherContext>())));
