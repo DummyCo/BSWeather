@@ -42,6 +42,7 @@ namespace BSWeather.Controllers
         }
 
         // GET: Registration
+        [RestoreModelStateFromTempData]
         public ActionResult Index()
         {
             return View();
@@ -50,6 +51,7 @@ namespace BSWeather.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [SetTempDataModelState]
         public ActionResult Register(RegistrationViewModel model)
         {
             if (ModelState.IsValid)
@@ -73,9 +75,14 @@ namespace BSWeather.Controllers
 
                     return RedirectToAction("Index", "Home");
                 }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error);
+                }
             }
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public ActionResult SignIn(LoginViewModel model)
@@ -98,7 +105,7 @@ namespace BSWeather.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return Redirect(model.PreviousUrl);
+                    return Redirect(model.PreviousUrl.Replace("User", string.Empty)); //TODO: WTF :D
                 case SignInStatus.LockedOut:
                     return Redirect(model.PreviousUrl);
                 case SignInStatus.RequiresVerification:
@@ -114,6 +121,29 @@ namespace BSWeather.Controllers
         {
             Request.GetOwinContext().Authentication.SignOut();
             return Redirect(previousUrl);
+        }
+
+        public class SetTempDataModelStateAttribute : ActionFilterAttribute
+        {
+            public override void OnActionExecuted(ActionExecutedContext filterContext)
+            {
+                base.OnActionExecuted(filterContext);
+                filterContext.Controller.TempData["ModelState"] =
+                   filterContext.Controller.ViewData.ModelState;
+            }
+        }
+
+        public class RestoreModelStateFromTempDataAttribute : ActionFilterAttribute
+        {
+            public override void OnActionExecuting(ActionExecutingContext filterContext)
+            {
+                base.OnActionExecuting(filterContext);
+                if (filterContext.Controller.TempData.ContainsKey("ModelState"))
+                {
+                    filterContext.Controller.ViewData.ModelState.Merge(
+                        (ModelStateDictionary)filterContext.Controller.TempData["ModelState"]);
+                }
+            }
         }
     }
 }
