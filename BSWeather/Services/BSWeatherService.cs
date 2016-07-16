@@ -67,8 +67,6 @@ namespace BSWeather.Services
             city.Users.Remove(user);
 
             context.SaveChanges();
-
-            context.SaveChanges();
         }
 
         public List<SearchHistoryRecord> GetSearchHistoryRecords(WeatherContext context, User user)

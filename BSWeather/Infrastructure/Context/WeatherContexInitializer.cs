@@ -23,6 +23,7 @@ namespace BSWeather.Infrastructure.Context
             };
 
             context.Cities.AddRange(defaultCities);
+            context.SaveChanges();
         }
     }
 }

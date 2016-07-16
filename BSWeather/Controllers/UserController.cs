@@ -11,6 +11,7 @@ using BSWeather.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using WebGrease.Css.Extensions;
 using DependencyResolver = System.Web.Mvc.DependencyResolver;
 
 namespace BSWeather.Controllers
@@ -60,13 +61,10 @@ namespace BSWeather.Controllers
         {
             if (ModelState.IsValid)
             {
-                var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-
                 var user = new User
                 {
                     UserName = model.Email,
-                    Email = model.Email,
-                    Cities = bsWeatherService.DeafultFavouriteCities
+                    Email = model.Email
                 };
 
                 var result = UserManager.Create(user, model.Password);
@@ -79,6 +77,13 @@ namespace BSWeather.Controllers
                         new AuthenticationProperties { IsPersistent = false },
                         identity
                     );
+
+                    using (var context = new WeatherContext())
+                    {
+                        context.Users.Attach(user);
+                        context.Cities.Take(5).ForEach(user.Cities.Add);
+                        context.SaveChanges();
+                    }
 
                     return RedirectToAction("Index", "Home");
                 }
