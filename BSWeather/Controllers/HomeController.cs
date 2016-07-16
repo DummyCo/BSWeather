@@ -118,19 +118,9 @@ namespace BSWeather.Controllers
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
             var city = bsWeatherService.TrackCity(id, cityName);
-
             var user = UserManager.FindById(User.Identity.GetUserId());
 
-            Context.Users.Attach(user);
-            Context.Cities.Attach(city);
-
-            if (user.Cities.Count < 6)
-            {
-                user.Cities.Add(city);
-                city.Users.Add(user);
-            }
-
-            Context.SaveChanges();
+            bsWeatherService.AddToFavourites(Context, user, city);
 
             return RedirectToAction("SearchCityByName", new CitySearch { CityName = cityName, Days = days });
         }
@@ -141,13 +131,7 @@ namespace BSWeather.Controllers
             var city = bsWeatherService.TrackCity(id, cityName);
             var user = UserManager.FindById(User.Identity.GetUserId());
 
-            Context.Users.Attach(user);
-            Context.Cities.Attach(city);
-
-            user.Cities.Remove(city);
-            city.Users.Remove(user);
-
-            Context.SaveChanges();
+            bsWeatherService.RemoveFromFavourites(Context, user, city);
 
             return RedirectToAction("Index", new { days });
         }

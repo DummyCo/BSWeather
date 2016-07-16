@@ -44,6 +44,33 @@ namespace BSWeather.Services
             }
         }
 
+        public void AddToFavourites(WeatherContext context, User user, City city)
+        {
+            context.Users.Attach(user);
+            context.Cities.Attach(city);
+
+            if (user.Cities.Count < 6)
+            {
+                user.Cities.Add(city);
+                city.Users.Add(user);
+            }
+
+            context.SaveChanges();
+        }
+
+        public void RemoveFromFavourites(WeatherContext context, User user, City city)
+        {
+            context.Users.Attach(user);
+            context.Cities.Attach(city);
+
+            user.Cities.Remove(city);
+            city.Users.Remove(user);
+
+            context.SaveChanges();
+
+            context.SaveChanges();
+        }
+
         public List<SearchHistoryRecord> GetSearchHistoryRecords()
         {
             using (var context = new WeatherContext())
