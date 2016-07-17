@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
 using BSWeather.Infrastructure.ActionFilterAttributes;
+using BSWeather.Infrastructure.Attributes.AuthorizeAttributes;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
 using Microsoft.AspNet.Identity;
@@ -15,35 +16,12 @@ namespace BSWeather.Controllers
 {
     public class UserController : Controller
     {
-        private UserManager _userManager;
+        public UserManager UserManager => Request.GetOwinContext().GetUserManager<UserManager>();
 
-        private SignInManager _signInManager;
-
-        public UserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<UserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
-
-        public SignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? Request.GetOwinContext().Get<SignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
-        }
+        public SignInManager SignInManager => Request.GetOwinContext().Get<SignInManager>();
 
         // GET: Registration
+        [AnonymousOnly]
         [RestoreModelStateFromTempData]
         public ActionResult Index()
         {
@@ -51,7 +29,7 @@ namespace BSWeather.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        [AnonymousOnly]
         [ValidateAntiForgeryToken]
         [SetTempDataModelState]
         public ActionResult Register(RegistrationViewModel model)
@@ -93,7 +71,8 @@ namespace BSWeather.Controllers
 
             return RedirectToAction("Index");
         }
-
+        
+        [AnonymousOnly]
         public ActionResult SignIn(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -115,19 +94,21 @@ namespace BSWeather.Controllers
             var result = SignInManager.PasswordSignIn(model.Email, model.Password, shouldLockout: false, isPersistent: false);
             switch (result)
             {
+                //TODO: EXTEND LOGICS
                 case SignInStatus.Success:
-                    return Redirect(model.PreviousUrl.Replace("User", string.Empty)); //TODO: WTF :D
+                    return Redirect(model.PreviousUrl);
                 case SignInStatus.LockedOut:
                     return Redirect(model.PreviousUrl);
                 case SignInStatus.RequiresVerification:
                     return Redirect(model.PreviousUrl);
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Возникла ошибка входа.");
                     return Redirect(model.PreviousUrl);
             }
         }
 
+        [Authorize]
         public ActionResult SignOut(string previousUrl)
         {
             Request.GetOwinContext().Authentication.SignOut();

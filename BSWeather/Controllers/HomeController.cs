@@ -15,32 +15,10 @@ namespace BSWeather.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger _logger;
-        private UserManager _userManager;
-        private WeatherContext _weatherContext;
 
-        public UserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<UserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
+        public UserManager UserManager => Request.GetOwinContext().GetUserManager<UserManager>();
 
-        public WeatherContext Context
-        {
-            get
-            {
-                return _weatherContext ?? Request.GetOwinContext().Get<WeatherContext>();
-            }
-            private set
-            {
-                _weatherContext = value;
-            }
-        }
+        public WeatherContext Context => Request.GetOwinContext().Get<WeatherContext>();
 
         public HomeController(ILogger logger)
         {
