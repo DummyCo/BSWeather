@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
 using BSWeather.Infrastructure.ActionFilterAttributes;
+using BSWeather.Infrastructure.Attributes.ActionFilterAttributes;
 using BSWeather.Infrastructure.Attributes.AuthorizeAttributes;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
@@ -19,8 +20,7 @@ namespace BSWeather.Controllers
         public UserManager UserManager => Request.GetOwinContext().GetUserManager<UserManager>();
 
         public SignInManager SignInManager => Request.GetOwinContext().Get<SignInManager>();
-
-        // GET: Registration
+        
         [AnonymousOnly]
         [RestoreModelStateFromTempData]
         public ActionResult Index()
@@ -108,7 +108,7 @@ namespace BSWeather.Controllers
             }
         }
 
-        [Authorize]
+        [RedirectingAuthorize]
         public ActionResult SignOut(string previousUrl)
         {
             Request.GetOwinContext().Authentication.SignOut();

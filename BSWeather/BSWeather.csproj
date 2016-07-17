@@ -192,6 +192,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Attributes\ActionFilterAttributes\RedirectingAuthorize.cs" />
     <Compile Include="Infrastructure\Attributes\ActionFilterAttributes\RestoreModelStateFromTempDataAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\ActionFilterAttributes\SetTempDataModelStateAttribute.cs" />
     <Compile Include="Infrastructure\Attributes\AuthorizeAttributes\AnonymousOnly.cs" />
