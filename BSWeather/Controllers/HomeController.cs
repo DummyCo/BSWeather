@@ -27,6 +27,7 @@ namespace BSWeather.Controllers
             logger.Info("HomeController ctor");
         }
 
+        [RestoreModelStateFromTempData]
         public ActionResult Index(int id, int days)
         {
             _logger.Info($"Index called with {id} id for {days} days");
@@ -52,6 +53,7 @@ namespace BSWeather.Controllers
             return View();
         }
 
+        [RestoreModelStateFromTempData]
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
             _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");
@@ -120,6 +122,7 @@ namespace BSWeather.Controllers
         }
 
         [RedirectingAuthorize]
+        [RestoreModelStateFromTempData]
         public ActionResult SearchHistroy()
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();

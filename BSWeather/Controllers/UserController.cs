@@ -2,7 +2,6 @@
 using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
-using BSWeather.Infrastructure.ActionFilterAttributes;
 using BSWeather.Infrastructure.Attributes.ActionFilterAttributes;
 using BSWeather.Infrastructure.Attributes.AuthorizeAttributes;
 using BSWeather.Infrastructure.Context;
@@ -73,6 +72,7 @@ namespace BSWeather.Controllers
         }
         
         [AnonymousOnly]
+        [SetTempDataModelState]
         public ActionResult SignIn(LoginViewModel model)
         {
             if (!ModelState.IsValid)

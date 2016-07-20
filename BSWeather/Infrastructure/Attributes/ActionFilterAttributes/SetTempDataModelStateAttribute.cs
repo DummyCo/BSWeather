@@ -1,8 +1,7 @@
 ﻿using System.Web.Mvc;
 
-namespace BSWeather.Infrastructure.ActionFilterAttributes
+namespace BSWeather.Infrastructure.Attributes.ActionFilterAttributes
 {
-
     public class SetTempDataModelStateAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(ActionExecutedContext filterContext)

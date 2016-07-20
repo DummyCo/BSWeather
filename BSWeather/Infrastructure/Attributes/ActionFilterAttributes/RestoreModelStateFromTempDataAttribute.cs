@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace BSWeather.Infrastructure.ActionFilterAttributes
+namespace BSWeather.Infrastructure.Attributes.ActionFilterAttributes
 {
     public class RestoreModelStateFromTempDataAttribute : ActionFilterAttribute
     {
