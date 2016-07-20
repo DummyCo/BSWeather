@@ -103,7 +103,7 @@ namespace BSWeather.Controllers
                     return Redirect(model.PreviousUrl);
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Возникла ошибка входа.");
+                    ModelState.AddModelError(string.Empty, "Возникла ошибка входа.");
                     return Redirect(model.PreviousUrl);
             }
         }
