@@ -81,19 +81,6 @@
     </div>
 
     <div class="container body-content">
-        @if (!Html.ViewData.ModelState.IsValid)
-        {
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-12 list-group-item">
-                        <p>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        </p>
-                    </div>
-                </div>
-            </div>
-        }
-
         @RenderBody()
         <hr />
         <footer>
@@ -107,6 +94,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryval")
-    @RenderSection("scripts", required: false)
+    @RenderSection("scripts", false)
 </body>
 </html>

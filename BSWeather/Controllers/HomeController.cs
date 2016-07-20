@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
@@ -32,15 +33,27 @@ namespace BSWeather.Controllers
         {
             _logger.Info($"Index called with {id} id for {days} days");
 
-            var weather = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            var city = bsWeatherService.TrackCity(id, weather.City.Name);
+
+            City city = null;
+            OpenWeatherBase.RootObject weather = null;
+
+            if (id != 0)
+            {
+                weather = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
+
+                if (weather != null)
+                {
+                    city = bsWeatherService.TrackCity(id, weather.City.Name);
+                }
+            }
+
             var user = UserManager.FindById(User.Identity.GetUserId());
 
             ViewData["Weather"] = weather;
             ViewData["Days"] = days;
 
-            if (user != null)
+            if (user != null && city != null)
             {
                 bsWeatherService.AddToHistory(Context, user, city);
                 ViewData["FavouriteCities"] = user.Cities.ToList();
@@ -54,6 +67,7 @@ namespace BSWeather.Controllers
         }
 
         [RestoreModelStateFromTempData]
+        [SetTempDataModelState]
         public ActionResult SearchCityByName(CitySearch citySearch)
         {
             _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");
@@ -83,18 +97,7 @@ namespace BSWeather.Controllers
                 bsWeatherService.AddToHistory(Context, user, city);
             }
 
-            ViewData["Weather"] = weather;
-            ViewData["Days"] = citySearch.Days;
-            if (user != null)
-            {
-                ViewData["FavouriteCities"] = user.Cities.ToList();
-            }
-            else
-            {
-                ViewData["FavouriteCities"] = bsWeatherService.DeafultFavouriteCities;
-            }
-
-            return View("Index");
+            return RedirectToAction("Index", new { id = weather?.City.Id ?? 0, citySearch.Days });
         }
 
         [RedirectingAuthorize]
@@ -106,7 +109,7 @@ namespace BSWeather.Controllers
 
             bsWeatherService.AddToFavourites(Context, user, city);
 
-            return RedirectToAction("SearchCityByName", new CitySearch { CityName = cityName, Days = days });
+            return RedirectToAction("Index", new { id, days });
         }
 
         [RedirectingAuthorize]
@@ -118,7 +121,7 @@ namespace BSWeather.Controllers
 
             bsWeatherService.RemoveFromFavourites(Context, user, city);
 
-            return RedirectToAction("Index", new { days });
+            return RedirectToAction("Index", new { id, days });
         }
 
         [RedirectingAuthorize]
