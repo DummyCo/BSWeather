@@ -53,9 +53,12 @@ namespace BSWeather.Controllers
             ViewData["Weather"] = weather;
             ViewData["Days"] = days;
 
-            if (user != null && city != null)
+            if (user != null)
             {
-                bsWeatherService.AddToHistory(Context, user, city);
+                if (city != null)
+                {
+                    bsWeatherService.AddToHistory(Context, user, city);
+                }
                 ViewData["FavouriteCities"] = user.Cities.ToList();
             }
             else
