@@ -25,6 +25,7 @@ namespace BSWeather
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Home/Index"),
+                CookieName = "BSWeather"
             });
         }
     }
