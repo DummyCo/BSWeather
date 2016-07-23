@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
@@ -31,41 +33,44 @@ namespace BSWeather.Controllers
         [AnonymousOnly]
         [ValidateAntiForgeryToken]
         [SetTempDataModelState]
-        public ActionResult Register(RegistrationViewModel model)
+        public async Task<ActionResult> Register(RegistrationViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new User
-                {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
+                // Reduced nesting
+                return RedirectToAction("Index");
+            }
 
-                var result = UserManager.Create(user, model.Password);
+            var user = new User
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
 
-                if (result.Succeeded)
-                {
-                    var identity = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+            var result = await UserManager.CreateAsync(user, model.Password);
 
-                    Request.GetOwinContext().Authentication.SignIn(
-                        new AuthenticationProperties { IsPersistent = false },
-                        identity
+            if (result.Succeeded)
+            {
+                var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+                Request.GetOwinContext().Authentication.SignIn(
+                    new AuthenticationProperties { IsPersistent = false },
+                    identity
                     );
 
-                    using (var context = DependencyResolver.Current.GetService<WeatherContext>())
-                    {
-                        context.Users.Attach(user);
-                        context.Cities.Take(5).ForEach(user.Cities.Add);
-                        context.SaveChanges();
-                    }
-
-                    return RedirectToAction("Index", "Home");
-                }
-
-                foreach (var error in result.Errors)
+                using (var context = DependencyResolver.Current.GetService<WeatherContext>())
                 {
-                    ModelState.AddModelError(string.Empty, error);
+                    context.Users.Attach(user);
+                    await context.Cities.Take(5).ForEachAsync(user.Cities.Add);
+                    await context.SaveChangesAsync();
                 }
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error);
             }
 
             return RedirectToAction("Index");
@@ -73,17 +78,17 @@ namespace BSWeather.Controllers
         
         [AnonymousOnly]
         [SetTempDataModelState]
-        public ActionResult SignIn(LoginViewModel model)
+        public async Task<ActionResult> SignIn(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return Redirect(model.PreviousUrl);
             }
 
-            var user = UserManager.Find(model.Email, model.Password);
+            var user = await UserManager.FindAsync(model.Email, model.Password);
             if (user != null)
             {
-                if (!UserManager.IsEmailConfirmed(user.Id))
+                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
                 {
                     //...
                 }
@@ -91,7 +96,7 @@ namespace BSWeather.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = SignInManager.PasswordSignIn(model.Email, model.Password, shouldLockout: false, isPersistent: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, shouldLockout: false, isPersistent: false);
             switch (result)
             {
                 //TODO: EXTEND LOGICS

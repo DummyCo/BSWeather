@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BSWeather.Infrastructure;
@@ -29,7 +30,7 @@ namespace BSWeather.Controllers
         }
 
         [RestoreModelStateFromTempData]
-        public ActionResult Index(int id, int days)
+        public async Task<ActionResult> Index(int id, int days)
         {
             _logger.Info($"Index called with {id} id for {days} days");
 
@@ -40,15 +41,15 @@ namespace BSWeather.Controllers
 
             if (id != 0)
             {
-                weather = DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherById(id, days);
+                weather = await DependencyResolver.Current.GetService<OpenWeatherService>().GetWeatherByIdAsync(id, days);
 
                 if (weather != null)
                 {
-                    city = bsWeatherService.TrackCity(id, weather.City.Name);
+                    city = await bsWeatherService.TrackCityAsync(id, weather.City.Name);
                 }
             }
 
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             ViewData["Weather"] = weather;
             ViewData["Days"] = days;
@@ -57,7 +58,7 @@ namespace BSWeather.Controllers
             {
                 if (city != null)
                 {
-                    bsWeatherService.AddToHistory(Context, user, city);
+                    await bsWeatherService.AddToHistoryAsync(Context, user, city);
                 }
                 ViewData["FavouriteCities"] = user.Cities.ToList();
             }
@@ -71,68 +72,68 @@ namespace BSWeather.Controllers
 
         [RestoreModelStateFromTempData]
         [SetTempDataModelState]
-        public ActionResult SearchCityByName(CitySearch citySearch)
+        public async Task<ActionResult> SearchCityByName(CitySearch citySearch)
         {
             _logger.Info($"SearchCityByName called for {citySearch.CityName} city and {citySearch.Days} days");
 
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
             var openWeatherService = DependencyResolver.Current.GetService<OpenWeatherService>();
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             OpenWeatherBase.RootObject weather = null;
             if (ModelState.IsValid)
             {
-                weather = openWeatherService.GetWeatherByCityName(citySearch.CityName, citySearch.Days);
+                weather = await openWeatherService.GetWeatherByCityNameAsync(citySearch.CityName, citySearch.Days);
             }
             else
             {
                 _logger.Warning($"SearchCityByName invalid ModelState");
             }
 
-            //Snippet to return default weather if smth went wrong
+            // Snippet to return default weather if smth went wrong
             if (weather == null)
             {
                 _logger.Warning($"SearchCityByName returned null weather");
             }
             else if (user != null)
             {
-                var city = bsWeatherService.TrackCity(weather.City.Id, weather.City.Name);
-                bsWeatherService.AddToHistory(Context, user, city);
+                var city = await bsWeatherService.TrackCityAsync(weather.City.Id, weather.City.Name);
+                await bsWeatherService.AddToHistoryAsync(Context, user, city);
             }
 
             return RedirectToAction("Index", new { id = weather?.City.Id ?? 0, citySearch.Days });
         }
 
         [RedirectingAuthorize]
-        public ActionResult AddToFavourites(int id, string cityName, int days)
+        public async Task<ActionResult> AddToFavourites(int id, string cityName, int days)
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            var city = bsWeatherService.TrackCity(id, cityName);
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var city = await bsWeatherService.TrackCityAsync(id, cityName);
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            bsWeatherService.AddToFavourites(Context, user, city);
+            await bsWeatherService.AddToFavouritesAsync(Context, user, city);
 
             return RedirectToAction("Index", new { id, days });
         }
 
         [RedirectingAuthorize]
-        public ActionResult RemoveFromFavourites(int id, string cityName, int days)
+        public async Task<ActionResult> RemoveFromFavourites(int id, string cityName, int days)
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            var city = bsWeatherService.TrackCity(id, cityName);
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var city = await bsWeatherService.TrackCityAsync(id, cityName);
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            bsWeatherService.RemoveFromFavourites(Context, user, city);
+            await bsWeatherService.RemoveFromFavouritesAsync(Context, user, city);
 
             return RedirectToAction("Index", new { id, days });
         }
 
         [RedirectingAuthorize]
         [RestoreModelStateFromTempData]
-        public ActionResult SearchHistroy()
+        public async Task<ActionResult> SearchHistroy()
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             var records = bsWeatherService.GetSearchHistoryRecords(Context, user);
             records.Reverse();

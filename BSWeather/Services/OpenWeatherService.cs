@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Configuration;
 using BSWeather.Models;
 using BSWeather.Services.Logger;
@@ -21,26 +22,26 @@ namespace BSWeather.Services
         [Inject]
         private AvailabilityCheckService AvailabilityCheckService { get; set; }
 
-        public OpenWeatherBase.RootObject GetWeatherById(int cityId, int days)
+        public async Task<OpenWeatherBase.RootObject> GetWeatherByIdAsync(int cityId, int days)
         {
             var url = $"{ApiUrl}/data/2.5/forecast/daily?id={cityId}&units=metric&lang=ru&cnt={days}&APPID={WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"]}";
-            return GetWeatherByUrl(url);
+            return await GetWeatherByUrlAsync(url);
         }
 
-        public OpenWeatherBase.RootObject GetWeatherByCityName(string cityName, int days)
+        public async Task<OpenWeatherBase.RootObject> GetWeatherByCityNameAsync(string cityName, int days)
         {
             var url = $"{ApiUrl}/data/2.5/forecast/daily?q={cityName}&units=metric&lang=ru&cnt={days}&APPID={WebConfigurationManager.AppSettings["OpenWeatherMapAPIKEY"]}";
-            return GetWeatherByUrl(url);
+            return await GetWeatherByUrlAsync(url);
         }
 
-        public OpenWeatherBase.RootObject GetWeatherByUrl(string url)
+        public async Task<OpenWeatherBase.RootObject> GetWeatherByUrlAsync(string url)
         {
             var webClient = new WebClient { Encoding = Encoding.UTF8 };
             string resultString;
 
             try
             {
-                resultString = webClient.DownloadString(url);
+                resultString = await webClient.DownloadStringTaskAsync(new Uri(url));
             }
             catch (Exception exception)
             {
@@ -51,7 +52,7 @@ namespace BSWeather.Services
 
             try
             {
-                return JsonConvert.DeserializeObject<OpenWeatherBase.RootObject>(resultString);
+                return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<OpenWeatherBase.RootObject>(resultString));
             }
             catch (Exception exception)
             {

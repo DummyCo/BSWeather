@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
@@ -20,27 +22,27 @@ namespace BSWeather.Services
             }
         }
 
-        public City TrackCity(int cityId, string cityName)
+        public async Task<City> TrackCityAsync(int cityId, string cityName)
         {
             using (var context = DependencyResolver.Current.GetService<WeatherContext>())
             {
-                var city = context.Cities.FirstOrDefault(c => c.ExternalIdentifier == cityId);
-                if (city == null)
+                var city = await context.Cities.FirstOrDefaultAsync(c => c.ExternalIdentifier == cityId);
+                if (city != null)
                 {
-                    var newCity = new City
-                    {
-                        ExternalIdentifier = cityId,
-                        Name = cityName
-                    };
-                    context.Cities.Add(newCity);
-                    context.SaveChanges();
-                    return newCity;
+                    return city;
                 }
-                return city;
+                var newCity = new City
+                {
+                    ExternalIdentifier = cityId,
+                    Name = cityName
+                };
+                context.Cities.Add(newCity);
+                await context.SaveChangesAsync();
+                return newCity;
             }
         }
 
-        public void AddToFavourites(WeatherContext context, User user, City city)
+        public async Task AddToFavouritesAsync(WeatherContext context, User user, City city)
         {
             context.Users.Attach(user);
             context.Cities.Attach(city);
@@ -51,10 +53,10 @@ namespace BSWeather.Services
                 city.Users.Add(user);
             }
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void RemoveFromFavourites(WeatherContext context, User user, City city)
+        public async Task RemoveFromFavouritesAsync(WeatherContext context, User user, City city)
         {
             context.Users.Attach(user);
             context.Cities.Attach(city);
@@ -62,26 +64,31 @@ namespace BSWeather.Services
             user.Cities.Remove(city);
             city.Users.Remove(user);
 
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+        }
+
+        public async Task AddToHistoryAsync(WeatherContext context, User user, City city)
+        {
+            context.Users.Attach(user);
+            context.Cities.Attach(city);
+
+            var record = new SearchHistoryRecord
+            {
+                User = user,
+                City = city,
+                DateTime = DateTime.Now
+            };
+
+            context.SearchHistoryRecords.Add(record);
+            user.SearchHistoryRecords.Add(record);
+
+            await context.SaveChangesAsync();
         }
 
         public List<SearchHistoryRecord> GetSearchHistoryRecords(WeatherContext context, User user)
         {
             context.Users.Attach(user);
             return user.SearchHistoryRecords.ToList();
-        }
-
-        public void AddToHistory(WeatherContext context, User user, City city)
-        {
-            context.Users.Attach(user);
-            context.Cities.Attach(city);
-
-            var record = new SearchHistoryRecord { User = user, City = city, DateTime = DateTime.Now};
-
-            context.SearchHistoryRecords.Add(record);
-            user.SearchHistoryRecords.Add(record);
-
-            context.SaveChanges();
         }
     }
 }
