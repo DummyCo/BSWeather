@@ -50,7 +50,7 @@ namespace BSWeather.Services
             catch (Exception exception)
             {
                 Logger.Error(exception);
-                await AvailabilityCheckService.CheckAvailable(BaseUrl);
+                await AvailabilityCheckService.CheckAvailableAsync(BaseUrl);
                 return null;
             }
 

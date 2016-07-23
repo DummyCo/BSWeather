@@ -12,7 +12,7 @@ namespace BSWeather.Services
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         private ILogger Logger { get; set; }
 
-        public async Task<bool> CheckAvailable(string url)
+        public async Task<bool> CheckAvailableAsync(string url)
         {
             try
             {

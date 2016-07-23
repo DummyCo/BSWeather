@@ -11,7 +11,6 @@ using BSWeather.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using WebGrease.Css.Extensions;
 using DependencyResolver = System.Web.Mvc.DependencyResolver;
 
 namespace BSWeather.Controllers
@@ -21,7 +20,7 @@ namespace BSWeather.Controllers
         public UserManager UserManager => Request.GetOwinContext().GetUserManager<UserManager>();
 
         public SignInManager SignInManager => Request.GetOwinContext().Get<SignInManager>();
-        
+
         [AnonymousOnly]
         [RestoreModelStateFromTempData]
         public ActionResult Index()
@@ -54,7 +53,7 @@ namespace BSWeather.Controllers
                 var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
                 Request.GetOwinContext().Authentication.SignIn(
-                    new AuthenticationProperties { IsPersistent = false },
+                    new AuthenticationProperties {IsPersistent = false},
                     identity
                     );
 
@@ -75,7 +74,7 @@ namespace BSWeather.Controllers
 
             return RedirectToAction("Index");
         }
-        
+
         [AnonymousOnly]
         [SetTempDataModelState]
         public async Task<ActionResult> SignIn(LoginViewModel model)
@@ -96,7 +95,10 @@ namespace BSWeather.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, shouldLockout: false, isPersistent: false);
+            var result =
+                await
+                    SignInManager.PasswordSignInAsync(model.Email, model.Password, shouldLockout: false,
+                        isPersistent: false);
             switch (result)
             {
                 //TODO: EXTEND LOGICS
