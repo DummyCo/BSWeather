@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Configuration;
@@ -36,17 +36,21 @@ namespace BSWeather.Services
 
         public async Task<OpenWeatherBase.RootObject> GetWeatherByUrlAsync(string url)
         {
-            var webClient = new WebClient { Encoding = Encoding.UTF8 };
             string resultString;
 
             try
             {
-                resultString = await webClient.DownloadStringTaskAsync(new Uri(url));
+                using (var client = new HttpClient())
+                using (var response = await client.GetAsync(url))
+                {
+                    var bytes = await response.Content.ReadAsByteArrayAsync();
+                    resultString = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+                }
             }
             catch (Exception exception)
             {
                 Logger.Error(exception);
-                AvailabilityCheckService.CheckAvailable(BaseUrl);
+                await AvailabilityCheckService.CheckAvailable(BaseUrl);
                 return null;
             }
 
