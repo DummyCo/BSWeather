@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using BSWeather.Infrastructure.Context;
 using BSWeather.Models;
+using DependencyResolver = System.Web.Mvc.DependencyResolver;
 
 namespace BSWeather.Services
 {
@@ -22,24 +23,21 @@ namespace BSWeather.Services
             }
         }
 
-        public async Task<City> TrackCityAsync(int cityId, string cityName)
+        public async Task<City> TrackCityAsync(WeatherContext context, int cityId, string cityName)
         {
-            using (var context = DependencyResolver.Current.GetService<WeatherContext>())
+            var city = await context.Cities.FirstOrDefaultAsync(c => c.ExternalIdentifier == cityId);
+            if (city != null)
             {
-                var city = await context.Cities.FirstOrDefaultAsync(c => c.ExternalIdentifier == cityId);
-                if (city != null)
-                {
-                    return city;
-                }
-                var newCity = new City
-                {
-                    ExternalIdentifier = cityId,
-                    Name = cityName
-                };
-                context.Cities.Add(newCity);
-                await context.SaveChangesAsync();
-                return newCity;
+                return city;
             }
+            var newCity = new City
+            {
+                ExternalIdentifier = cityId,
+                Name = cityName
+            };
+            context.Cities.Add(newCity);
+            await context.SaveChangesAsync();
+            return newCity;
         }
 
         public async Task AddToFavouritesAsync(WeatherContext context, User user, City city)

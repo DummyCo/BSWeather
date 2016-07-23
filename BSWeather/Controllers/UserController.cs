@@ -52,10 +52,7 @@ namespace BSWeather.Controllers
             {
                 var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
-                Request.GetOwinContext().Authentication.SignIn(
-                    new AuthenticationProperties {IsPersistent = false},
-                    identity
-                    );
+                Request.GetOwinContext().Authentication.SignIn(new AuthenticationProperties {IsPersistent = false}, identity);
 
                 using (var context = DependencyResolver.Current.GetService<WeatherContext>())
                 {

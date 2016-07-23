@@ -44,7 +44,7 @@ namespace BSWeather.Controllers
 
                 if (weather != null)
                 {
-                    city = await bsWeatherService.TrackCityAsync(id, weather.City.Name);
+                    city = await bsWeatherService.TrackCityAsync(Context, id, weather.City.Name);
                 }
             }
 
@@ -96,7 +96,7 @@ namespace BSWeather.Controllers
             }
             else if (user != null)
             {
-                var city = await bsWeatherService.TrackCityAsync(weather.City.Id, weather.City.Name);
+                var city = await bsWeatherService.TrackCityAsync(Context, weather.City.Id, weather.City.Name);
                 await bsWeatherService.AddToHistoryAsync(Context, user, city);
             }
 
@@ -107,7 +107,7 @@ namespace BSWeather.Controllers
         public async Task<ActionResult> AddToFavourites(int id, string cityName, int days)
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            var city = await bsWeatherService.TrackCityAsync(id, cityName);
+            var city = await bsWeatherService.TrackCityAsync(Context, id, cityName);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             await bsWeatherService.AddToFavouritesAsync(Context, user, city);
@@ -119,7 +119,7 @@ namespace BSWeather.Controllers
         public async Task<ActionResult> RemoveFromFavourites(int id, string cityName, int days)
         {
             var bsWeatherService = DependencyResolver.Current.GetService<BsWeatherService>();
-            var city = await bsWeatherService.TrackCityAsync(id, cityName);
+            var city = await bsWeatherService.TrackCityAsync(Context, id, cityName);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             await bsWeatherService.RemoveFromFavouritesAsync(Context, user, city);
